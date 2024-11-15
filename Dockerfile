@@ -7,7 +7,7 @@ RUN apt-get update
 RUN apt-get install -y curl git unzip
 
 #define variables
-ARG FLUTTER_VERSION=3.13.0
+ARG FLUTTER_VERSION=3.24.1
 ARG FLUTTER_SDK_LOCATION=/usr/local/flutter
 ARG APP_LOCATION=/app/
 
@@ -39,7 +39,7 @@ RUN flutter build web
 
 #STEP 2: DEPLOY
 #use nginx to deploy
-FROM nginx:1.25.2-alpine
+FROM nginx:1.26.2-alpine-perl
 
 #copy the info of the builded web app to nginx
 COPY --from=build-env /app/build/web /usr/share/nginx/html
