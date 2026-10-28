@@ -81,9 +81,6 @@ class AppMessages$app$es implements AppMessages$app$en {
   String get name => 'Root101';
   @override
   String get title => 'Root101 · Ingeniería de software, desde la raíz';
-  @override
-  String get needMoreSpace =>
-      'Por ahora Root101 está pensado para pantallas de escritorio. Ábrelo en una ventana más ancha.';
 }
 
 // Path: nav
@@ -103,6 +100,10 @@ class AppMessages$nav$es implements AppMessages$nav$en {
   String get github => 'GitHub';
   @override
   String language({required String name}) => 'Idioma: ${name}';
+  @override
+  String get openMenu => 'Abrir menú';
+  @override
+  String get closeMenu => 'Cerrar menú';
 }
 
 // Path: hero
@@ -225,12 +226,13 @@ extension on AppMessagesEs {
     return switch (path) {
       'app.name' => 'Root101',
       'app.title' => 'Root101 · Ingeniería de software, desde la raíz',
-      'app.needMoreSpace' => 'Por ahora Root101 está pensado para pantallas de escritorio. Ábrelo en una ventana más ancha.',
       'nav.about' => 'Qué hacemos',
       'nav.projects' => 'Proyectos',
       'nav.team' => 'Equipo',
       'nav.github' => 'GitHub',
       'nav.language' => ({required String name}) => 'Idioma: ${name}',
+      'nav.openMenu' => 'Abrir menú',
+      'nav.closeMenu' => 'Cerrar menú',
       'hero.badge' =>
         'making the world a better place, one open source project at a time',
       'hero.title' => 'Ingeniería de software,',

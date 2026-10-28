@@ -1,5 +1,14 @@
 # Changelog
 
+## 2.1.0 - 2026-10-28
+
+Phones and small windows get their own layout, from the design canvas.
+
+- Mobile layout below 1024 px (it replaces the "made for desktop" notice): a header menu with the sections, the language and GitHub; every section in one column; the projects as a carousel and an accordion, with the previews scaled to the screen
+- Maple preview: the dark backdrop of the canvas behind the phones
+- Dumpling preview: the editor fills the whole window and its header no longer overflows
+- Feather IO tab: both links show again (the second one was clipped)
+
 ## 2.0.0 - 2026-10-28
 
 New site, built from scratch from the design canvas.

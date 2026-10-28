@@ -28,6 +28,10 @@ class ProjectModel {
   /// A screen of the project inside the preview window (540 px tall)
   final WidgetBuilder preview;
 
+  /// On a phone the preview is laid out in this box and scaled down to the
+  /// screen's width, so it keeps the desktop look at a size that reads
+  final Size compactPreviewSize;
+
   /// Text links under the description (pub.dev, the repo)
   final List<ProjectLink> links;
 
@@ -44,6 +48,7 @@ class ProjectModel {
     required this.logo,
     required this.windowTitle,
     required this.preview,
+    this.compactPreviewSize = const Size(856, 540),
     this.links = const [],
     this.buttons = const [],
   });

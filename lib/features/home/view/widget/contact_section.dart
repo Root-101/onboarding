@@ -9,9 +9,23 @@ class ContactSection extends StatelessWidget {
   Widget build(BuildContext context) {
     final colors = app.colors;
     final intl = context.intl.contact;
+    final compact = context.isCompact;
     final titleSize = AppText.clampVw(context, min: 40, vw: 6, max: 76);
+    final orb = compact ? 480.0 : 760.0;
+    final buttons = [
+      AppButton.primary(
+        label: intl.github,
+        url: Site.github,
+        padding: const EdgeInsets.symmetric(horizontal: 26),
+      ),
+      AppButton.secondary(
+        label: Site.contactEmail,
+        url: Uri(scheme: 'mailto', path: Site.contactEmail),
+        padding: const EdgeInsets.symmetric(horizontal: 26),
+      ),
+    ];
     return Container(
-      margin: const EdgeInsets.only(top: 100),
+      margin: EdgeInsets.only(top: compact ? 56 : 100),
       decoration: BoxDecoration(
         border: Border(top: BorderSide(color: colors.surface.stroke)),
       ),
@@ -27,18 +41,18 @@ class ContactSection extends StatelessWidget {
                       left: -box.maxWidth / 2,
                       width: box.maxWidth * 2,
                       bottom: -box.maxHeight * 0.08,
-                      height: box.maxHeight * 0.9,
+                      height: box.maxHeight * (compact ? 0.7 : 0.9),
                       child: const Opacity(
                         opacity: 0.7,
                         child: PerspectiveFloor(),
                       ),
                     ),
-                    // centered at 50 % / 40 %
+                    // centered at 50 % / 40 % (38 % on a phone)
                     Positioned(
-                      left: box.maxWidth / 2 - 380,
-                      top: box.maxHeight * 0.4 - 380,
+                      left: box.maxWidth / 2 - orb / 2,
+                      top: box.maxHeight * (compact ? 0.38 : 0.4) - orb / 2,
                       child: GlowOrb(
-                        size: 760,
+                        size: orb,
                         fade: 0.62,
                         color: colors.brand.indigo.withValues(alpha: 0.30),
                       ),
@@ -49,14 +63,16 @@ class ContactSection extends StatelessWidget {
             ),
             PageColumn(
               maxWidth: 900,
-              padding: const EdgeInsets.fromLTRB(0, 120, 0, 140),
+              padding: compact
+                  ? const EdgeInsets.fromLTRB(0, 80, 0, 96)
+                  : const EdgeInsets.fromLTRB(0, 120, 0, 140),
               child: Column(
-                spacing: 28,
+                spacing: compact ? 22 : 28,
                 children: [
                   GlowShadow(
                     color: colors.brand.signal.withValues(alpha: 0.3),
                     blur: 30,
-                    child: const Root101Mark(width: 140, spin: true),
+                    child: Root101Mark(width: compact ? 104 : 140, spin: true),
                   ),
                   Text.rich(
                     TextSpan(
@@ -82,29 +98,25 @@ class ContactSection extends StatelessWidget {
                       intl.description,
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        fontSize: 18,
+                        fontSize: compact ? 16 : 18,
                         height: 1.55,
                         color: colors.text.secondary,
                       ),
                     ),
                   ),
-                  Wrap(
-                    alignment: WrapAlignment.center,
-                    spacing: 12,
-                    runSpacing: 12,
-                    children: [
-                      AppButton.primary(
-                        label: intl.github,
-                        url: Site.github,
-                        padding: const EdgeInsets.symmetric(horizontal: 26),
-                      ),
-                      AppButton.secondary(
-                        label: Site.contactEmail,
-                        url: Uri(scheme: 'mailto', path: Site.contactEmail),
-                        padding: const EdgeInsets.symmetric(horizontal: 26),
-                      ),
-                    ],
-                  ),
+                  if (compact)
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      spacing: 10,
+                      children: buttons,
+                    )
+                  else
+                    Wrap(
+                      alignment: WrapAlignment.center,
+                      spacing: 12,
+                      runSpacing: 12,
+                      children: buttons,
+                    ),
                 ],
               ),
             ),

@@ -1,6 +1,12 @@
 import 'package:root101/app_exporter.dart';
 import 'package:material_ui/material_ui.dart';
 
+extension CompactLayoutX on BuildContext {
+  /// Narrower than [minDesktopWidth]: the phone layout of the design
+  /// (`LandingMovil`), one column and a menu in the header
+  bool get isCompact => MediaQuery.sizeOf(this).width < minDesktopWidth;
+}
+
 /// The page column: centered, at most [AppLayout.maxWidth] of content with the
 /// gutters outside it (CSS `max-width` with `content-box`)
 class PageColumn extends StatelessWidget {
@@ -20,13 +26,14 @@ class PageColumn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final layout = app.dimensions.layout;
+    final gutter = context.isCompact ? layout.compactGutter : layout.gutter;
     return Center(
       child: ConstrainedBox(
         constraints: BoxConstraints(
-          maxWidth: (maxWidth ?? layout.maxWidth) + 2 * layout.gutter,
+          maxWidth: (maxWidth ?? layout.maxWidth) + 2 * gutter,
         ),
         child: Padding(
-          padding: padding.add(EdgeInsets.symmetric(horizontal: layout.gutter)),
+          padding: padding.add(EdgeInsets.symmetric(horizontal: gutter)),
           child: child,
         ),
       ),
@@ -154,20 +161,23 @@ class AppTag extends StatelessWidget {
 /// A square tile with an icon in signal ("what we do")
 class IconTile extends StatelessWidget {
   final SvgAsset icon;
+  final double size;
 
-  const IconTile({required this.icon, super.key});
+  const IconTile({required this.icon, super.key, this.size = 48});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 48,
-      height: 48,
+      width: size,
+      height: size,
       alignment: Alignment.center,
       decoration: BoxDecoration(
         color: app.colors.surface.chip,
-        borderRadius: app.dimensions.radius.m,
+        borderRadius: size < 48
+            ? app.dimensions.radius.s
+            : app.dimensions.radius.m,
       ),
-      child: icon.build(size: 24, color: app.colors.brand.signal),
+      child: icon.build(size: size / 2, color: app.colors.brand.signal),
     );
   }
 }

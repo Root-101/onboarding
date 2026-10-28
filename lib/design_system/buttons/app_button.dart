@@ -122,6 +122,10 @@ class AppButton extends StatelessWidget {
         ),
         child: Row(
           mainAxisSize: expand ? MainAxisSize.max : MainAxisSize.min,
+          // stretched by its parent (the stacked buttons of a phone): centered
+          mainAxisAlignment: expand
+              ? MainAxisAlignment.start
+              : MainAxisAlignment.center,
           spacing: gap,
           children: [
             if (icon case final icon?) icon.build(size: iconSize, color: fg),

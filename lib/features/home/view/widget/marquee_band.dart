@@ -8,9 +8,11 @@ class MarqueeBand extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = app.colors;
+    final compact = context.isCompact;
+    final fontSize = compact ? 13.0 : 15.0;
     final style = AppText.mono.copyWith(
-      fontSize: 15,
-      letterSpacing: AppText.em(0.12, 15),
+      fontSize: fontSize,
+      letterSpacing: AppText.em(0.12, fontSize),
       color: colors.text.secondary,
     );
     final words = [
@@ -22,13 +24,13 @@ class MarqueeBand extends StatelessWidget {
     final slash = Text('/', style: style.copyWith(color: colors.brand.indigo));
     return ExcludeSemantics(
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 22),
+        padding: EdgeInsets.symmetric(vertical: compact ? 18 : 22),
         decoration: BoxDecoration(
           color: colors.surface.band,
           border: Border(bottom: BorderSide(color: colors.surface.stroke)),
         ),
         child: Marquee(
-          gap: 40,
+          gap: compact ? 28 : 40,
           duration: const Duration(seconds: 40),
           children: [
             for (final (word, accent) in words) ...[

@@ -65,13 +65,13 @@ class GlowOrb extends StatelessWidget {
 class SpotlightPainter extends CustomPainter {
   final Alignment at;
   final Color color;
+  final double radius;
 
-  SpotlightPainter({required this.at, required this.color});
+  SpotlightPainter({required this.at, required this.color, this.radius = 560});
 
   @override
   void paint(Canvas canvas, Size size) {
     final center = at.alongSize(size);
-    const radius = 560.0;
     final paint = Paint()
       ..shader = RadialGradient(
         colors: [color, color.withValues(alpha: 0)],
@@ -82,5 +82,5 @@ class SpotlightPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant SpotlightPainter old) =>
-      old.at != at || old.color != color;
+      old.at != at || old.color != color || old.radius != radius;
 }

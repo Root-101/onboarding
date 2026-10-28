@@ -23,9 +23,6 @@ class AppTerminal extends StatefulWidget {
 }
 
 class _AppTerminalState extends State<AppTerminal> {
-  static const double _fontSize = 15;
-  static const double _lineHeight = _fontSize * 2.2;
-
   late TerminalScript _script = _scriptOf(widget);
   Timer? _timer;
   int _tick = 0;
@@ -65,8 +62,14 @@ class _AppTerminalState extends State<AppTerminal> {
   Widget build(BuildContext context) {
     final colors = app.colors;
     final frame = _script.frameAt(_tick);
+    final compact = context.isCompact;
+    final fontSize = compact ? 11.0 : 15.0;
+    final lineHeight = fontSize * 2.2;
+    final padding = compact
+        ? const EdgeInsets.fromLTRB(16, 16, 16, 18)
+        : const EdgeInsets.fromLTRB(22, 22, 22, 26);
     final style = AppText.mono.copyWith(
-      fontSize: _fontSize,
+      fontSize: fontSize,
       height: 2.2,
       color: colors.text.primary,
     );
@@ -82,7 +85,7 @@ class _AppTerminalState extends State<AppTerminal> {
     );
 
     return WindowFrame(
-      borderRadius: BorderRadius.circular(18),
+      borderRadius: BorderRadius.circular(compact ? 16 : 18),
       background: colors.surface.window.withValues(alpha: 0.92),
       shadows: [
         BoxShadow(
@@ -98,14 +101,14 @@ class _AppTerminalState extends State<AppTerminal> {
       title: Text(
         widget.title,
         style: AppText.mono.copyWith(
-          fontSize: 13,
+          fontSize: compact ? 12 : 13,
           color: colors.text.secondary,
         ),
       ),
       child: Container(
         // the command, every line and the `clear` prompt
-        height: 22 + 26 + _lineHeight * (widget.lines.length + 2),
-        padding: const EdgeInsets.fromLTRB(22, 22, 22, 26),
+        height: padding.vertical + lineHeight * (widget.lines.length + 2),
+        padding: padding,
         alignment: Alignment.topLeft,
         child: ClipRect(
           child: Column(
