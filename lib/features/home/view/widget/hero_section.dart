@@ -51,7 +51,7 @@ class _HeroSectionState extends State<HeroSection> {
               const Positioned.fill(child: _Floor(height: 0.68)),
               Positioned(
                 left: -120,
-                top: 60,
+                top: 54,
                 child: GlowOrb(
                   size: 520,
                   color: colors.brand.indigo.withValues(alpha: 0.35),
@@ -60,7 +60,7 @@ class _HeroSectionState extends State<HeroSection> {
               ),
               Positioned(
                 right: -140,
-                top: 220,
+                top: 214,
                 child: GlowOrb(
                   size: 460,
                   color: colors.brand.signal.withValues(alpha: 0.16),
@@ -69,7 +69,7 @@ class _HeroSectionState extends State<HeroSection> {
                 ),
               ),
               PageColumn(
-                padding: const EdgeInsets.fromLTRB(0, 56, 0, 152),
+                padding: const EdgeInsets.fromLTRB(0, 50, 0, 152),
                 child: LayoutBuilder(
                   builder: (context, column) {
                     // flex 1 1 460px and 1 1 420px, 56 apart: the free space

@@ -53,6 +53,16 @@ abstract class ProjectsCatalog {
         es: 'feather io · consola',
       ),
       preview: (_) => const FeatherIoPreview(),
+      links: [
+        ProjectLink(
+          label: 'railway.com/deploy/feather-io',
+          url: Uri.parse('https://railway.com/deploy/feather-io'),
+        ),
+        ProjectLink(
+          label: 'Root-101/feather-io',
+          url: Uri.parse('https://github.com/Root-101/feather-io'),
+        ),
+      ],
     ),
     ProjectModel(
       slug: 'dumpling',
@@ -74,6 +84,12 @@ abstract class ProjectsCatalog {
         es: 'dump·ling · workspace principal',
       ),
       preview: (_) => const DumplingPreview(),
+      links: [
+        ProjectLink(
+          label: 'Root-101/dumpling',
+          url: Uri.parse('https://github.com/Root-101/dumpling'),
+        ),
+      ],
     ),
     ProjectModel(
       slug: 'maple',
@@ -103,9 +119,9 @@ abstract class ProjectsCatalog {
           primary: true,
         ),
         ProjectButton(
-          label: const LocalizedText.same('Web: mapple.root101.dev →'),
+          label: const LocalizedText.same('Web: maple.root101.dev →'),
           icon: app.assets.icons.actions.globe,
-          url: Uri.parse('https://mapple.root101.dev'),
+          url: Uri.parse('https://maple.root101.dev'),
         ),
       ],
     ),

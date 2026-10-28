@@ -184,12 +184,16 @@ class _Phone extends StatelessWidget {
           ),
         ],
       ),
-      child: FittedBox(
-        fit: BoxFit.fill,
-        child: SizedBox(
-          width: 390,
-          height: 844,
-          child: ColoredBox(color: MaplePreview.cream, child: child),
+      // the screen keeps the inner radius (32 - 6), or its corners eat the frame
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(26),
+        child: FittedBox(
+          fit: BoxFit.fill,
+          child: SizedBox(
+            width: 390,
+            height: 844,
+            child: ColoredBox(color: MaplePreview.cream, child: child),
+          ),
         ),
       ),
     );
