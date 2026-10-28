@@ -15,17 +15,24 @@ class HeroSection extends StatefulWidget {
 }
 
 class _HeroSectionState extends State<HeroSection> {
-  /// Where the spot is before the mouse moves (72 %, 38 %)
-  Alignment _spot = const Alignment(0.44, -0.24);
+  /// Where the spot is before the mouse moves (72 %, 38 %). A notifier, so a
+  /// mouse move repaints only the spot, not the whole hero
+  final ValueNotifier<Alignment> _spot = ValueNotifier(
+    const Alignment(0.44, -0.24),
+  );
 
   void _follow(PointerHoverEvent event, Size size) {
     if (size.isEmpty) return;
-    setState(
-      () => _spot = Alignment(
-        event.localPosition.dx / size.width * 2 - 1,
-        event.localPosition.dy / size.height * 2 - 1,
-      ),
+    _spot.value = Alignment(
+      event.localPosition.dx / size.width * 2 - 1,
+      event.localPosition.dy / size.height * 2 - 1,
     );
+  }
+
+  @override
+  void dispose() {
+    _spot.dispose();
+    super.dispose();
   }
 
   @override
@@ -41,10 +48,13 @@ class _HeroSectionState extends State<HeroSection> {
           child: Stack(
             children: [
               Positioned.fill(
-                child: CustomPaint(
-                  painter: SpotlightPainter(
-                    at: _spot,
-                    color: colors.brand.indigo.withValues(alpha: 0.22),
+                child: ValueListenableBuilder(
+                  valueListenable: _spot,
+                  builder: (context, at, _) => CustomPaint(
+                    painter: SpotlightPainter(
+                      at: at,
+                      color: colors.brand.indigo.withValues(alpha: 0.22),
+                    ),
                   ),
                 ),
               ),

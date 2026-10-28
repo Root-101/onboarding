@@ -114,8 +114,6 @@ class AppGlobal {
 
   factory AppGlobal() => _instance;
 
-  BuildContext get context => navigatorKey.currentContext!;
-
   /// Texts of the site's language; without a navigator yet (or in tests),
   /// English
   AppMessages get intl {

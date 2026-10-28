@@ -1,7 +1,6 @@
 import 'dart:ui' show PlatformDispatcher;
 
 import 'package:root101/app_exporter.dart';
-import 'package:material_ui/material_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LanguageCubit extends Cubit<LanguageState> {
@@ -13,7 +12,7 @@ class LanguageCubit extends Cubit<LanguageState> {
     name: 'English',
   );
 
-  List<LanguageModel> languages = [
+  static final List<LanguageModel> languages = [
     defaultLanguage,
     LanguageModel(
       icon: app.assets.icons.language.es,
@@ -22,24 +21,26 @@ class LanguageCubit extends Cubit<LanguageState> {
     ),
   ];
 
-  LanguageModel currentSelectedLanguage = defaultLanguage;
-
   LanguageCubit({required this.repo})
-    : super(LanguageInitialState(current: defaultLanguage, allLanguages: [])) {
+    : super(LanguageState(current: defaultLanguage, allLanguages: languages)) {
     init();
   }
 
   /// The one picked before; a first visit gets the browser's language, or
   /// [defaultLanguage] (English) when the site doesn't have it
   Future init() async {
-    String? key = await repo.loadKey();
-    currentSelectedLanguage = _resolve(
-      key: key ?? PlatformDispatcher.instance.locale.languageCode,
-    );
-
+    String? key;
+    try {
+      key = await repo.loadKey();
+    } catch (_) {
+      // no storage (WebCrypto needs https, or site data is blocked): the
+      // browser's language, and the picker still works
+    }
     emit(
-      LanguageChangedState(
-        current: currentSelectedLanguage,
+      LanguageState(
+        current: _resolve(
+          key: key ?? PlatformDispatcher.instance.locale.languageCode,
+        ),
         allLanguages: languages,
       ),
     );
@@ -56,15 +57,9 @@ class LanguageCubit extends Cubit<LanguageState> {
     if (language == null) {
       return;
     }
-    currentSelectedLanguage = language;
-    repo.save(model: currentSelectedLanguage);
-
-    emit(
-      LanguageChangedState(
-        current: currentSelectedLanguage,
-        allLanguages: languages,
-      ),
-    );
+    // not remembered when there is no storage, see [init]
+    repo.save(model: language).ignore();
+    emit(LanguageState(current: language, allLanguages: languages));
   }
 
   LanguageModel _resolve({required String? key}) {
@@ -76,28 +71,12 @@ class LanguageCubit extends Cubit<LanguageState> {
       orElse: () => defaultLanguage,
     );
   }
-
-  Locale get locale => Locale(currentSelectedLanguage.key);
 }
 
 // states
-abstract class LanguageState {
+class LanguageState {
   final LanguageModel current;
   final List<LanguageModel> allLanguages;
 
   const LanguageState({required this.current, required this.allLanguages});
-}
-
-class LanguageInitialState extends LanguageState {
-  const LanguageInitialState({
-    required super.current,
-    required super.allLanguages,
-  });
-}
-
-class LanguageChangedState extends LanguageState {
-  const LanguageChangedState({
-    required super.current,
-    required super.allLanguages,
-  });
 }
