@@ -1,0 +1,50 @@
+app:
+  name: 'Root101'
+  title: 'Root101 · Software engineering, from the root'
+  needMoreSpace: 'Root101 is made for desktop screens for now. Open it on a wider window.'
+
+nav:
+  about: 'What we do'
+  projects: 'Projects'
+  team: 'Team'
+  github: 'GitHub'
+  language: 'Language: {name: String}'
+
+hero:
+  badge: 'making the world a better place, one open source project at a time'
+  title: 'Software engineering,'
+  titleAccent: 'from the root.'
+  description: 'Root101 designs and builds tools for developers and apps for people. Open source software, built on solid foundations and made to last.'
+  seeProjects: 'See projects'
+  projects(plural, param=n):
+    one: 'project'
+    other: 'projects'
+  members(plural, param=n):
+    one: 'member'
+    other: 'members'
+  indie: 'indie'
+
+about:
+  overline: '01 · WHAT WE DO'
+  title: 'Small pieces that do one thing, and do it well.'
+  description: 'No investors, no rush. We pick problems we know up close and solve them with care, from the backend to the screen.'
+
+projects:
+  overline: '02 · PROJECTS'
+  title: 'What we are building.'
+  previous: 'Previous project'
+  next: 'Next project'
+  pick: 'Pick a project'
+
+team:
+  overline: '03 · TEAM'
+  title: 'For now, few people, lots of ideas.'
+  openTitle: 'This seat is open'
+  openDescription: 'Like building small, well-made things? Check out the repos, open an issue or write to us.'
+  openLink: 'See repositories'
+
+contact:
+  title: 'Let''s build something'
+  titleAccent: 'from the root.'
+  description: 'Ideas, bugs, collaborations or just saying hi: it all starts on GitHub.'
+  github: 'Go to GitHub'

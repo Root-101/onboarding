@@ -1,12 +1,12 @@
 {
-    "name": "root101",
-    "short_name": "root101",
+    "name": "Root101",
+    "short_name": "Root101",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "#0175C2",
-    "theme_color": "#0175C2",
-    "description": "Onboard page for Root101 portal",
-    "orientation": "portrait-primary",
+    "background_color": "#06071A",
+    "theme_color": "#06071A",
+    "description": "Software engineering, from the root",
+    "orientation": "landscape-primary",
     "prefer_related_applications": false,
     "icons": [
         {

@@ -1,59 +1,139 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <!--
-    If you are serving your web app in a path other than the root, change the
-    href value below to reflect the base path you are serving from.
+    <base href="$FLUTTER_BASE_HREF">
 
-    The path provided below has to start and end with a slash "/" in order for
-    it to work correctly.
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-    For more details:
-    * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
+    <title>Root101 · Software engineering, from the root</title>
+    <meta name="description" content="Root101: software engineering, from the root. Open source tools for developers and apps for people.">
 
-    This is a placeholder for base href that will be replaced by the value of
-    the `--base-href` argument provided to `flutter build`.
-  -->
-  <base href="$FLUTTER_BASE_HREF">
+    <!-- Responsive -->
+    <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0">
 
-  <meta charset="UTF-8">
-  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
-  <meta name="description" content="Onboard page for Root101 portal">
+    <!-- PWA -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Root101">
 
-  <!-- iOS meta tags & icons -->
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="apple-mobile-web-app-title" content="root101">
-  <link rel="apple-touch-icon" href="icons/Icon-192.png">
+    <!-- Theme color -->
+    <meta name="theme-color" content="#06071A">
 
-  <!-- Favicon -->
-  <link rel="icon" type="image/png" href="favicon.png"/>
+    <!-- Icons -->
+    <link rel="apple-touch-icon" href="icons/Icon-192.png">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
 
-  <title>root101</title>
-  <link rel="manifest" href="manifest.json">
+    <!-- Manifest -->
+    <link rel="manifest" href="manifest.json">
 
-  <script>
-    // The value below is injected by flutter build, do not touch.
-    const serviceWorkerVersion = null;
-  </script>
-  <!-- This script adds the flutter initialization JS code -->
-  <script src="flutter.js" defer></script>
-</head>
-<body>
-  <script>
-    window.addEventListener('load', function(ev) {
-      // Download main.dart.js
-      _flutter.loader.loadEntrypoint({
-        serviceWorker: {
-          serviceWorkerVersion: serviceWorkerVersion,
-        },
-        onEntrypointLoaded: function(engineInitializer) {
-          engineInitializer.initializeEngine().then(function(appRunner) {
-            appRunner.runApp();
-          });
+    <style>
+        /* Same palette as the app (AppColors), so there is no jump while Flutter loads */
+        * {
+          box-sizing: border-box;
         }
-      });
-    });
-  </script>
+
+        html,
+        body {
+          width: 100%;
+          height: 100%;
+          margin: 0;
+          padding: 0;
+          overflow: hidden;
+          background: #06071A; /* surface.background */
+          font-family: system-ui, sans-serif;
+        }
+
+        #splash {
+          position: fixed;
+          inset: 0;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          gap: 28px;
+          background: #06071A;
+          z-index: 9999;
+          transition: opacity 0.35s ease;
+        }
+
+        #splash-logo {
+          width: 150px;
+          height: 96px;
+          filter: drop-shadow(0 0 24px rgba(91, 91, 255, 0.6));
+        }
+
+        #splash-wordmark {
+          width: 220px;
+          height: 49px;
+          margin-top: -4px;
+        }
+
+        .loader {
+          width: 220px;
+          height: 4px;
+          background: #22264F; /* surface.stroke */
+          border-radius: 999px;
+          overflow: hidden;
+          position: relative;
+        }
+
+        .loader::before {
+          content: "";
+          position: absolute;
+          left: -40%;
+          width: 40%;
+          height: 100%;
+          background: #5CF2C0; /* brand.signal */
+          border-radius: 999px;
+          animation: loading 1.2s infinite ease;
+        }
+
+        @keyframes loading {
+          0% {
+            left: -40%;
+          }
+
+          100% {
+            left: 100%;
+          }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .loader::before {
+            animation: none;
+            left: 0;
+            width: 100%;
+            opacity: 0.5;
+          }
+        }
+
+        .fade-out {
+          opacity: 0;
+          pointer-events: none;
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- Splash -->
+<div id="splash" role="status" aria-live="polite">
+    <svg id="splash-logo" viewBox="8 6 106 68" aria-label="Root101"><path d="M12 12 H28.5 V68 H19.5 V21 H12 Z M94 12 H110.5 V68 H101.5 V21 H94 Z" fill="#EEF0FF"/><g fill="#5B5BFF"><rect x="59.5" y="13" width="7" height="8" rx="0.6"/><rect x="59.5" y="13" width="7" height="8" rx="0.6" transform="rotate(45 63 40)"/><rect x="59.5" y="13" width="7" height="8" rx="0.6" transform="rotate(90 63 40)"/><rect x="59.5" y="13" width="7" height="8" rx="0.6" transform="rotate(135 63 40)"/><rect x="59.5" y="13" width="7" height="8" rx="0.6" transform="rotate(180 63 40)"/><rect x="59.5" y="13" width="7" height="8" rx="0.6" transform="rotate(225 63 40)"/><rect x="59.5" y="13" width="7" height="8" rx="0.6" transform="rotate(270 63 40)"/><rect x="59.5" y="13" width="7" height="8" rx="0.6" transform="rotate(315 63 40)"/></g><circle cx="63" cy="40" r="18" fill="none" stroke="#5B5BFF" stroke-width="7"/><path d="M57 35 L52.5 40 L57 45 M69 35 L73.5 40 L69 45 M64.5 33.5 L61.5 46.5" fill="none" stroke="#5CF2C0" stroke-width="3" stroke-linecap="square" stroke-linejoin="miter"/></svg>
+    <svg id="splash-wordmark" viewBox="0 -720 3328 740" aria-hidden="true"><path d="M70 0V-496H194V-440H212Q223 -470 248.5 -484.0Q274 -498 308 -498H368V-386H306Q258 -386 227.0 -360.5Q196 -335 196 -282V0ZM652 14Q578 14 519.0 -16.0Q460 -46 426.0 -103.0Q392 -160 392 -240V-256Q392 -336 426.0 -393.0Q460 -450 519.0 -480.0Q578 -510 652 -510Q726 -510 785.0 -480.0Q844 -450 878.0 -393.0Q912 -336 912 -256V-240Q912 -160 878.0 -103.0Q844 -46 785.0 -16.0Q726 14 652 14ZM652 -98Q710 -98 748.0 -135.5Q786 -173 786 -243V-253Q786 -323 748.5 -360.5Q711 -398 652 -398Q594 -398 556.0 -360.5Q518 -323 518 -253V-243Q518 -173 556.0 -135.5Q594 -98 652 -98ZM1214 14Q1140 14 1081.0 -16.0Q1022 -46 988.0 -103.0Q954 -160 954 -240V-256Q954 -336 988.0 -393.0Q1022 -450 1081.0 -480.0Q1140 -510 1214 -510Q1288 -510 1347.0 -480.0Q1406 -450 1440.0 -393.0Q1474 -336 1474 -256V-240Q1474 -160 1440.0 -103.0Q1406 -46 1347.0 -16.0Q1288 14 1214 14ZM1214 -98Q1272 -98 1310.0 -135.5Q1348 -173 1348 -243V-253Q1348 -323 1310.5 -360.5Q1273 -398 1214 -398Q1156 -398 1118.0 -360.5Q1080 -323 1080 -253V-243Q1080 -173 1118.0 -135.5Q1156 -98 1214 -98ZM1730 0Q1681 0 1650.5 -30.5Q1620 -61 1620 -112V-392H1496V-496H1620V-650H1746V-496H1882V-392H1746V-134Q1746 -104 1774 -104H1870V0Z" fill="#EEF0FF"/><path d="M2134 0V-606H2116L2025.4 -392.0H1891.6L2031 -700H2262V0ZM2602 14Q2478 14 2403.0 -54.5Q2328 -123 2328 -262V-438Q2328 -573 2403.0 -643.5Q2478 -714 2602 -714Q2727 -714 2801.5 -643.5Q2876 -573 2876 -438V-262Q2876 -123 2801.5 -54.5Q2727 14 2602 14ZM2602 -100Q2677 -100 2712.5 -141.0Q2748 -182 2748 -258V-444Q2748 -521 2708.5 -560.5Q2669 -600 2602 -600Q2533 -600 2494.5 -559.0Q2456 -518 2456 -444V-258Q2456 -179 2492.5 -139.5Q2529 -100 2602 -100ZM3134 0V-606H3116L3025.4 -392.0H2891.6L3031 -700H3262V0Z" fill="#5CF2C0"/></svg>
+    <div class="loader"></div>
+</div>
+
+<!-- Splash: its language, and removing it on the first frame (no inline scripts, see the CSP) -->
+<script src="splash.js"></script>
+
+<!-- Flutter -->
+<script src="flutter_bootstrap.js" async=""></script>
+
 </body>
+
 </html>

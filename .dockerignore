@@ -1,0 +1,10 @@
+.dockerignore
+Dockerfile
+.dart_tool/
+.fvm/
+.idea/
+*.iml
+build/
+test/
+.git/
+.flutter-plugins-dependencies
