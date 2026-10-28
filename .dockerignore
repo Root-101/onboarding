@@ -6,3 +6,5 @@ Dockerfile
 *.iml
 build/
 test/
+.git/
+.flutter-plugins-dependencies

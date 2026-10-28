@@ -22,13 +22,13 @@ The image builds the web release and serves it with nginx (`docker/`). To change
 
 ## Where things live
 
-| What | Where |
-|------|-------|
-| Projects (links, previews) | `lib/features/projects/data/projects_catalog.dart` |
-| Team | `lib/features/team/data/team_catalog.dart` |
-| Domain, GitHub, contact email | `lib/config/site.dart` |
-| Texts (en / es) | `lib/l10n/*.i18n.yaml`, then `fvm dart run slang` |
-| Colors, sizes, shared widgets | `lib/design_system/` |
+| What                          | Where                                              |
+|-------------------------------|----------------------------------------------------|
+| Projects (links, previews)    | `lib/features/projects/data/projects_catalog.dart` |
+| Team                          | `lib/features/team/data/team_catalog.dart`         |
+| Domain, GitHub, contact email | `lib/config/site.dart`                             |
+| Texts (en / es)               | `lib/l10n/*.i18n.yaml`, then `fvm dart run slang`  |
+| Colors, sizes, shared widgets | `lib/design_system/`                               |
 
 ## Tests
 

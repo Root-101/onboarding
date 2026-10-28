@@ -29,7 +29,9 @@ RUN flutter pub get --enforce-lockfile
 # Copy the source (except anything in .dockerignore) and build
 COPY . .
 # CanvasKit from the build itself, not from Google's CDN: the CSP only allows scripts of the origin
-RUN flutter build web --release --no-web-resources-cdn
+# Debug symbols of CanvasKit (~8 MB) and the build id are not served
+RUN flutter build web --release --no-web-resources-cdn \
+    && find build/web -name "*.symbols" -delete && rm -f build/web/.last_build_id
 
 # Static files on nginx
 FROM nginx:1.29.1-alpine
