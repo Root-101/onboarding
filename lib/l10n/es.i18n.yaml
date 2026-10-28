@@ -1,7 +1,6 @@
 app:
   name: 'Root101'
   title: 'Root101 · Ingeniería de software, desde la raíz'
-  needMoreSpace: 'Por ahora Root101 está pensado para pantallas de escritorio. Ábrelo en una ventana más ancha.'
 
 nav:
   about: 'Qué hacemos'
@@ -9,6 +8,8 @@ nav:
   team: 'Equipo'
   github: 'GitHub'
   language: 'Idioma: {name: String}'
+  openMenu: 'Abrir menú'
+  closeMenu: 'Cerrar menú'
 
 hero:
   badge: 'making the world a better place, one open source project at a time'

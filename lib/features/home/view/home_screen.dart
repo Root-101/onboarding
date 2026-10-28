@@ -63,7 +63,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 // the header is pinned over the page, the page starts below it
                 SizedBox(
                   key: _keys[HomeSection.top],
-                  height: HomeHeader.height,
+                  height: HomeHeader.heightOf(context),
                 ),
                 RepaintBoundary(
                   child: HeroSection(

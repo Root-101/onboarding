@@ -71,10 +71,6 @@ class AppMessages$app$en {
 
   /// en: 'Root101 · Software engineering, from the root'
   String get title => 'Root101 · Software engineering, from the root';
-
-  /// en: 'Root101 is made for desktop screens for now. Open it on a wider window.'
-  String get needMoreSpace =>
-      'Root101 is made for desktop screens for now. Open it on a wider window.';
 }
 
 // Path: nav
@@ -99,6 +95,12 @@ class AppMessages$nav$en {
 
   /// en: 'Language: {name: String}'
   String language({required String name}) => 'Language: ${name}';
+
+  /// en: 'Open menu'
+  String get openMenu => 'Open menu';
+
+  /// en: 'Close menu'
+  String get closeMenu => 'Close menu';
 }
 
 // Path: hero
@@ -246,12 +248,13 @@ extension on AppMessages {
     return switch (path) {
       'app.name' => 'Root101',
       'app.title' => 'Root101 · Software engineering, from the root',
-      'app.needMoreSpace' => 'Root101 is made for desktop screens for now. Open it on a wider window.',
       'nav.about' => 'What we do',
       'nav.projects' => 'Projects',
       'nav.team' => 'Team',
       'nav.github' => 'GitHub',
       'nav.language' => ({required String name}) => 'Language: ${name}',
+      'nav.openMenu' => 'Open menu',
+      'nav.closeMenu' => 'Close menu',
       'hero.badge' =>
         'making the world a better place, one open source project at a time',
       'hero.title' => 'Software engineering,',

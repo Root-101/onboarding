@@ -8,16 +8,19 @@ class TeamSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final intl = context.intl.team;
+    final compact = context.isCompact;
     return PageColumn(
-      padding: const EdgeInsets.fromLTRB(0, 120, 0, 40),
+      padding: compact
+          ? const EdgeInsets.fromLTRB(0, 64, 0, 24)
+          : const EdgeInsets.fromLTRB(0, 120, 0, 40),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
-        spacing: 40,
+        spacing: compact ? 24 : 40,
         children: [
           SectionHeading(overline: intl.overline, title: intl.title),
           AutoFitGrid(
             minItemWidth: 300,
-            gap: 20,
+            gap: compact ? 16 : 20,
             children: [
               for (final member in TeamCatalog.members)
                 _MemberCard(member: member),
@@ -38,6 +41,8 @@ class _MemberCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = app.colors;
+    final compact = context.isCompact;
+    final nameSize = compact ? 21.0 : 24.0;
     return ConicRing(
       borderRadius: app.dimensions.radius.xxl,
       child: Container(
@@ -51,15 +56,17 @@ class _MemberCard extends StatelessWidget {
             // centered on the avatar and the name (28 + 42 - 40)
             const ScanLine(top: 30),
             Padding(
-              padding: EdgeInsets.all(app.dimensions.padding.card),
+              padding: EdgeInsets.all(
+                compact ? 22 : app.dimensions.padding.card,
+              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                spacing: 20,
+                spacing: compact ? 18 : 20,
                 children: [
                   Row(
-                    spacing: 18,
+                    spacing: compact ? 16 : 18,
                     children: [
-                      _Avatar(path: member.avatar),
+                      _Avatar(path: member.avatar, size: compact ? 64 : 84),
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -68,9 +75,9 @@ class _MemberCard extends StatelessWidget {
                             Text(
                               member.name,
                               style: TextStyle(
-                                fontSize: 24,
+                                fontSize: nameSize,
                                 fontWeight: FontWeight.w700,
-                                letterSpacing: AppText.em(-0.02, 24),
+                                letterSpacing: AppText.em(-0.02, nameSize),
                               ),
                             ),
                             Text(
@@ -121,16 +128,17 @@ class _MemberCard extends StatelessWidget {
 
 class _Avatar extends StatelessWidget {
   final String? path;
+  final double size;
 
-  const _Avatar({this.path});
+  const _Avatar({required this.size, this.path});
 
   @override
   Widget build(BuildContext context) {
     final colors = app.colors;
     final photo = path;
     return Container(
-      width: 84,
-      height: 84,
+      width: size,
+      height: size,
       clipBehavior: Clip.antiAlias,
       alignment: Alignment.center,
       decoration: BoxDecoration(
@@ -144,10 +152,10 @@ class _Avatar extends StatelessWidget {
       ),
       child: photo == null
           ? app.assets.icons.actions.user.build(
-              size: 40,
+              size: size * 0.47,
               color: colors.text.primary,
             )
-          : Image.asset(photo, width: 84, height: 84, fit: BoxFit.cover),
+          : Image.asset(photo, width: size, height: size, fit: BoxFit.cover),
     );
   }
 }
@@ -160,26 +168,29 @@ class _OpenSeatCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final colors = app.colors;
     final intl = context.intl.team;
+    final compact = context.isCompact;
+    final seat = compact ? 56.0 : 84.0;
+    final titleSize = compact ? 21.0 : 24.0;
     return HoverCard(
       borderRadius: app.dimensions.radius.xxl,
       background: colors.surface.plateFaint,
       borderColor: colors.surface.strokeStrong,
-      padding: EdgeInsets.all(app.dimensions.padding.card),
+      padding: EdgeInsets.all(compact ? 22 : app.dimensions.padding.card),
       borderBuilder: (color, child) =>
           DashedBorder(color: color, radius: 24, child: child),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.center,
-        spacing: 16,
+        spacing: compact ? 12 : 16,
         children: [
           DashedBorder(
             color: colors.surface.strokeHover,
-            radius: 42,
+            radius: seat / 2,
             child: SizedBox.square(
-              dimension: 84,
+              dimension: seat,
               child: Center(
                 child: app.assets.icons.actions.add.build(
-                  size: 32,
+                  size: compact ? 24 : 32,
                   color: colors.brand.indigo,
                 ),
               ),
@@ -188,9 +199,9 @@ class _OpenSeatCard extends StatelessWidget {
           Text(
             intl.openTitle,
             style: TextStyle(
-              fontSize: 24,
+              fontSize: titleSize,
               fontWeight: FontWeight.w700,
-              letterSpacing: AppText.em(-0.02, 24),
+              letterSpacing: AppText.em(-0.02, titleSize),
             ),
           ),
           Text(intl.openDescription, style: AppText.body),
