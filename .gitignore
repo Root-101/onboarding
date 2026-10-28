@@ -45,3 +45,6 @@ app.*.map.json
 deploy/
 # FVM Version Cache
 .fvm/
+
+# Local scratch (screenshots, notes)
+.temp/
