@@ -5,7 +5,7 @@ import 'package:root101/app_exporter.dart';
 abstract class TeamCatalog {
   static const List<MemberModel> members = [
     MemberModel(
-      name: 'Jesus Hernandez',
+      name: 'Jesús Hernández',
       role: LocalizedText(
         en: 'founder · everything',
         es: 'fundador · todo',
@@ -17,6 +17,7 @@ abstract class TeamCatalog {
       ),
       tags: ['winter', 'feather io', 'dumpling', 'maple'],
       github: 'JesusHdez960717',
+      avatar: 'assets/team/jesus-hernandez.jpg',
     ),
   ];
 }

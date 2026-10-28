@@ -48,6 +48,7 @@ flutter:
     - assets/icons/languages/
     - assets/icons/sections/
     - assets/projects/
+    - assets/team/
   fonts:
     - family: SpaceGrotesk
       fonts:
