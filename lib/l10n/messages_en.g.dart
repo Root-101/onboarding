@@ -72,6 +72,9 @@ class AppMessages$app$en {
   /// en: 'Root101'
   String get name => 'Root101';
 
+  /// en: 'Root101 · Software engineering, from the root'
+  String get title => 'Root101 · Software engineering, from the root';
+
   /// en: 'Root101 is made for desktop screens for now. Open it on a wider window.'
   String get needMoreSpace =>
       'Root101 is made for desktop screens for now. Open it on a wider window.';
@@ -298,6 +301,7 @@ extension on AppMessages {
   dynamic _flatMapFunction(String path) {
     return switch (path) {
       'app.name' => 'Root101',
+      'app.title' => 'Root101 · Software engineering, from the root',
       'app.needMoreSpace' => 'Root101 is made for desktop screens for now. Open it on a wider window.',
       'nav.about' => 'What we do',
       'nav.projects' => 'Projects',

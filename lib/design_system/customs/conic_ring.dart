@@ -68,48 +68,33 @@ class ConicRing extends StatelessWidget {
   }
 }
 
-/// `.r1-scan`: an 80 px band of signal sweeping down its parent every 3.4 s.
-/// Put it in a [Stack] that clips
+/// `.r1-scan`: a faint 80 px band of signal across its parent, still, [top]
+/// from the top (behind the name of a member card). Put it in a [Stack]
 class ScanLine extends StatelessWidget {
-  const ScanLine({super.key});
+  final double top;
+
+  const ScanLine({required this.top, super.key});
 
   @override
   Widget build(BuildContext context) {
     final signal = app.colors.brand.signal;
-    return Positioned.fill(
+    return Positioned(
+      left: 0,
+      right: 0,
+      top: top,
+      height: 80,
       child: IgnorePointer(
-        child: LayoutBuilder(
-          builder: (context, box) => LoopAnimation(
-            duration: const Duration(milliseconds: 3400),
-            still: -1,
-            builder: (context, t, _) {
-              if (t < 0) return const SizedBox.shrink();
-              // `top` from -20 % to 120 %
-              final top = box.maxHeight * (-0.2 + 1.4 * t);
-              return Stack(
-                children: [
-                  Positioned(
-                    left: 0,
-                    right: 0,
-                    top: top,
-                    height: 80,
-                    child: DecoratedBox(
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                          colors: [
-                            signal.withValues(alpha: 0),
-                            signal.withValues(alpha: 0.07),
-                            signal.withValues(alpha: 0),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              );
-            },
+        child: DecoratedBox(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                signal.withValues(alpha: 0),
+                signal.withValues(alpha: 0.03),
+                signal.withValues(alpha: 0),
+              ],
+            ),
           ),
         ),
       ),

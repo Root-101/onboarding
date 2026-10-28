@@ -1,7 +1,8 @@
 import 'package:root101/app_exporter.dart';
 import 'package:material_ui/material_ui.dart';
 
-/// The page column: centered, at most [AppLayout.maxWidth] with its gutters
+/// The page column: centered, at most [AppLayout.maxWidth] of content with the
+/// gutters outside it (CSS `max-width` with `content-box`)
 class PageColumn extends StatelessWidget {
   final EdgeInsets padding;
   final Widget child;
@@ -21,7 +22,9 @@ class PageColumn extends StatelessWidget {
     final layout = app.dimensions.layout;
     return Center(
       child: ConstrainedBox(
-        constraints: BoxConstraints(maxWidth: maxWidth ?? layout.maxWidth),
+        constraints: BoxConstraints(
+          maxWidth: (maxWidth ?? layout.maxWidth) + 2 * layout.gutter,
+        ),
         child: Padding(
           padding: padding.add(EdgeInsets.symmetric(horizontal: layout.gutter)),
           child: child,

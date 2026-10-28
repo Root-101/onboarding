@@ -29,7 +29,8 @@ class LanguageCubit extends Cubit<LanguageState> {
     init();
   }
 
-  /// The one picked before; a first visit gets the browser's language
+  /// The one picked before; a first visit gets the browser's language, or
+  /// [defaultLanguage] (English) when the site doesn't have it
   Future init() async {
     String? key = await repo.loadKey();
     currentSelectedLanguage = _resolve(

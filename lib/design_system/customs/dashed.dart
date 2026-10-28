@@ -37,7 +37,7 @@ class DashedBorder extends StatelessWidget {
     super.key,
     this.strokeWidth = 1.5,
     this.radius = 10,
-    this.dash = 6,
+    this.dash = 4,
     this.gap = 4,
     this.child,
   });

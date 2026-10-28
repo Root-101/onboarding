@@ -68,7 +68,7 @@ class AppPadding {
 class AppLayout {
   const AppLayout();
 
-  /// Every section is centered in this width (padding included)
+  /// Every section is centered in this width of content (gutters outside)
   double get maxWidth => 1200;
 
   /// Side padding of the page column

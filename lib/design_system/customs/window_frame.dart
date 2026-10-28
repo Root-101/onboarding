@@ -46,7 +46,9 @@ class WindowFrame extends StatelessWidget {
         border: Border.all(color: colors.strokeStrong),
         boxShadow: shadows,
       ),
+      // as tall as the bar and the child: the child gives its own height
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Container(
@@ -70,7 +72,7 @@ class WindowFrame extends StatelessWidget {
               ],
             ),
           ),
-          Flexible(child: child),
+          child,
         ],
       ),
     );

@@ -92,7 +92,7 @@ class App extends StatelessWidget {
         } else {
           return MaterialApp.router(
             debugShowCheckedModeBanner: false,
-            onGenerateTitle: (context) => context.intl.app.name,
+            onGenerateTitle: (context) => context.intl.app.title,
             theme: ThemeConfig.theme,
             locale: locale,
             routerConfig: RouteConfig.router,

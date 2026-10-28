@@ -84,6 +84,8 @@ class AppMessages$app$es implements AppMessages$app$en {
   @override
   String get name => 'Root101';
   @override
+  String get title => 'Root101 · Ingeniería de software, desde la raíz';
+  @override
   String get needMoreSpace =>
       'Por ahora Root101 está pensado para pantallas de escritorio. Ábrelo en una ventana más ancha.';
 }
@@ -270,6 +272,7 @@ extension on AppMessagesEs {
   dynamic _flatMapFunction(String path) {
     return switch (path) {
       'app.name' => 'Root101',
+      'app.title' => 'Root101 · Ingeniería de software, desde la raíz',
       'app.needMoreSpace' => 'Por ahora Root101 está pensado para pantallas de escritorio. Ábrelo en una ventana más ancha.',
       'nav.about' => 'Qué hacemos',
       'nav.projects' => 'Proyectos',

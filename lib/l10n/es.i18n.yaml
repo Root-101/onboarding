@@ -1,5 +1,6 @@
 app:
   name: 'Root101'
+  title: 'Root101 · Ingeniería de software, desde la raíz'
   needMoreSpace: 'Por ahora Root101 está pensado para pantallas de escritorio. Ábrelo en una ventana más ancha.'
 
 nav:

@@ -43,7 +43,18 @@ class BlinkingCaret extends StatelessWidget {
       duration: const Duration(seconds: 1),
       builder: (context, t, _) => Opacity(
         opacity: t < 0.5 ? 1 : 0,
-        child: Text('▍', style: style.copyWith(color: app.colors.brand.signal)),
+        // `▍` drawn as a box: the font has no such glyph and the fallback is a thin bar
+        child: SizedBox(
+          height: (style.fontSize ?? 14) * (style.height ?? 1.2),
+          child: Center(
+            widthFactor: 1,
+            child: Container(
+              width: (style.fontSize ?? 14) * 0.38,
+              height: (style.fontSize ?? 14) * 1.15,
+              color: app.colors.brand.signal,
+            ),
+          ),
+        ),
       ),
     );
   }

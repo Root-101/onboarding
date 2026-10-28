@@ -48,7 +48,8 @@ class _MemberCard extends StatelessWidget {
         ),
         child: Stack(
           children: [
-            const ScanLine(),
+            // centered on the avatar and the name (28 + 42 - 40)
+            const ScanLine(top: 30),
             Padding(
               padding: EdgeInsets.all(app.dimensions.padding.card),
               child: Column(
