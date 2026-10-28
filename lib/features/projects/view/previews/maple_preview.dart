@@ -18,6 +18,11 @@ class MaplePreview extends StatelessWidget {
   static const Color field = Color(0xFFD9D3C7);
   static const Color white = Color(0xFFFFFFFF);
 
+  /// The dark backdrop behind the phones, with its two circles
+  static const Color backdrop = Color(0xFF0A1715);
+  static const Color backdropGreen = Color(0xFF10322C);
+  static const Color backdropClay = Color(0xFF2E1A15);
+
   static const String archive = 'M3 5h18v4H3zM5 9v10h14V9M10 13h4';
   static const String edit = 'M4 20h4L19 9l-4-4L4 16zM13.5 6.5l4 4';
   static const String pin = 'M9 3h6l-1 6 4 4H6l4-4zM12 13v8';
@@ -30,17 +35,21 @@ class MaplePreview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ColoredBox(
-      color: cream,
+      color: backdrop,
       child: DefaultTextStyle(
         style: const TextStyle(fontFamily: 'PlusJakartaSans', color: ink),
         child: Stack(
           clipBehavior: Clip.none,
           children: [
-            Positioned(right: -80, top: -90, child: _circle(300, mint)),
+            Positioned(
+              right: -80,
+              top: -90,
+              child: _circle(300, backdropGreen),
+            ),
             Positioned(
               left: -60,
               bottom: -100,
-              child: _circle(240, const Color(0xFFF7E4DD)),
+              child: _circle(240, backdropClay),
             ),
             if (compact)
               const Center(child: _Phone(child: _AccountsScreen()))
