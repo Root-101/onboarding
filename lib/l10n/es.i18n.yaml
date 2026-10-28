@@ -1,0 +1,63 @@
+app:
+  name: 'Root101'
+  needMoreSpace: 'Por ahora Root101 está pensado para pantallas de escritorio. Ábrelo en una ventana más ancha.'
+
+nav:
+  about: 'Qué hacemos'
+  projects: 'Proyectos'
+  team: 'Equipo'
+  github: 'GitHub'
+  language: 'Idioma: {name: String}'
+
+hero:
+  badge: 'making the world a better place, one open source project at a time'
+  title: 'Ingeniería de software,'
+  titleAccent: 'desde la raíz.'
+  description: 'Root101 diseña y desarrolla herramientas para desarrolladores y aplicaciones para personas. Software de código abierto, construido con fundamentos sólidos y pensado para durar.'
+  seeProjects: 'Ver proyectos'
+  projects(plural, param=n):
+    one: 'proyecto'
+    other: 'proyectos'
+  members(plural, param=n):
+    one: 'integrante'
+    other: 'integrantes'
+  indie: 'indie'
+
+about:
+  overline: '01 · QUÉ HACEMOS'
+  title: 'Piezas pequeñas que hacen una cosa, y la hacen bien.'
+  description: 'Sin inversores ni prisa. Elegimos problemas que conocemos de cerca y los resolvemos con cuidado, del backend a la pantalla.'
+
+projects:
+  overline: '02 · PROYECTOS'
+  title: 'Lo que estamos construyendo.'
+  previous: 'Proyecto anterior'
+  next: 'Proyecto siguiente'
+  pick: 'Elegir proyecto'
+
+team:
+  overline: '03 · EQUIPO'
+  title: 'Por ahora, pocas personas, muchas ideas.'
+  openTitle: 'Este lugar está libre'
+  openDescription: '¿Te gusta construir cosas pequeñas y bien hechas? Mira los repos, abre un issue o escríbenos.'
+  openLink: 'Ver repositorios'
+
+contact:
+  title: 'Construyamos algo'
+  titleAccent: 'desde la raíz.'
+  description: 'Ideas, bugs, colaboraciones o simplemente saludar: todo empieza en GitHub.'
+  github: 'Ir a GitHub'
+  emailPlaceholder: '[correo de contacto]'
+
+previews:
+  dumpling:
+    workspace: 'Workspace'
+    main: 'principal'
+    runNow: 'Ejecutar ahora'
+    source: 'ORIGEN'
+    settings: 'CONFIGURACIÓN'
+    destination: 'DESTINO'
+    schedule: 'Cada día · 03:00'
+    keep: 'Guardar 14 copias'
+    completed: 'Backup completado'
+    completedMeta: 'hoy 03:00:41 · 1.2 GB · 38 s'

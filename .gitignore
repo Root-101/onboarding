@@ -38,8 +38,10 @@ app.*.symbols
 # Obfuscation related
 app.*.map.json
 
-.fvm/flutter_sdk
 
-pubspec.lock
+
+# pubspec.lock is versioned: the Dockerfile runs `pub get --enforce-lockfile`
 
 deploy/
+# FVM Version Cache
+.fvm/
