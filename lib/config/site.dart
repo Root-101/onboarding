@@ -4,8 +4,8 @@ abstract class Site {
 
   static final Uri github = Uri.parse('https://github.com/Root-101');
 
-  /// Shown in the contact section; null shows the placeholder of the design
-  static const String? contactEmail = null;
+  /// Shown in the contact section
+  static const String contactEmail = 'jhernandezb96@gmail.com';
 
   static const int year = 2026;
 }

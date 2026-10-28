@@ -1,4 +1,4 @@
 # Roadmap
 
-- [ ] Dumpling: agregar la URL de despliegue de la plantilla de Railway (como `railway.com/deploy/feather-io` en Feather IO)
-- [ ] Equipo: cambiar la frase de Jesús Hernández por una mejor (`lib/features/team/data/team_catalog.dart`)
+- [ ] Dumpling: add the deploy URL of its Railway template (like `railway.com/deploy/feather-io` in Feather IO)
+- [ ] Team: replace Jesús Hernández's bio with a better one (`lib/features/team/data/team_catalog.dart`)

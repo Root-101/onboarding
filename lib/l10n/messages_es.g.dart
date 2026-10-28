@@ -213,8 +213,6 @@ class AppMessages$contact$es implements AppMessages$contact$en {
       'Ideas, bugs, colaboraciones o simplemente saludar: todo empieza en GitHub.';
   @override
   String get github => 'Ir a GitHub';
-  @override
-  String get emailPlaceholder => '[correo de contacto]';
 }
 
 /// The flat map containing all translations for locale <es>.
@@ -271,7 +269,6 @@ extension on AppMessagesEs {
       'contact.titleAccent' => 'desde la raíz.',
       'contact.description' => 'Ideas, bugs, colaboraciones o simplemente saludar: todo empieza en GitHub.',
       'contact.github' => 'Ir a GitHub',
-      'contact.emailPlaceholder' => '[correo de contacto]',
       _ => null,
     };
   }

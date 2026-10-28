@@ -10,8 +10,6 @@ class ContactSection extends StatelessWidget {
     final colors = app.colors;
     final intl = context.intl.contact;
     final titleSize = AppText.clampVw(context, min: 40, vw: 6, max: 76);
-    const email = Site.contactEmail;
-    final emailLabel = email ?? intl.emailPlaceholder;
     return Container(
       margin: const EdgeInsets.only(top: 100),
       decoration: BoxDecoration(
@@ -101,10 +99,8 @@ class ContactSection extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(horizontal: 26),
                       ),
                       AppButton.secondary(
-                        label: emailLabel,
-                        url: email == null
-                            ? null
-                            : Uri(scheme: 'mailto', path: email),
+                        label: Site.contactEmail,
+                        url: Uri(scheme: 'mailto', path: Site.contactEmail),
                         padding: const EdgeInsets.symmetric(horizontal: 26),
                       ),
                     ],

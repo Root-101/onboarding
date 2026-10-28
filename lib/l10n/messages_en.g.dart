@@ -234,9 +234,6 @@ class AppMessages$contact$en {
 
   /// en: 'Go to GitHub'
   String get github => 'Go to GitHub';
-
-  /// en: '[contact email]'
-  String get emailPlaceholder => '[contact email]';
 }
 
 /// The flat map containing all translations for locale <en>.
@@ -293,7 +290,6 @@ extension on AppMessages {
       'contact.titleAccent' => 'from the root.',
       'contact.description' => 'Ideas, bugs, collaborations or just saying hi: it all starts on GitHub.',
       'contact.github' => 'Go to GitHub',
-      'contact.emailPlaceholder' => '[contact email]',
       _ => null,
     };
   }

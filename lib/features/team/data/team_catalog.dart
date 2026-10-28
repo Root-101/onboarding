@@ -7,8 +7,8 @@ abstract class TeamCatalog {
     MemberModel(
       name: 'Jesús Hernández',
       role: LocalizedText(
-        en: 'founder · everything',
-        es: 'fundador · todo',
+        en: 'founder · full-stack software engineer',
+        es: 'fundador · ingeniero de software full-stack',
       ),
       // shortcut: placeholder bio, see ROADMAP.md
       bio: LocalizedText(
