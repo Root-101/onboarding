@@ -42,9 +42,4 @@ class ProjectLogos {
   SvgAsset get dumpling => const SvgAsset('$_projects/dumpling.svg');
 
   SvgAsset get maple => const SvgAsset('$_projects/maple.svg');
-
-  /// Inside the Dumpling preview: a source and a destination
-  SvgAsset get postgresql => const SvgAsset('$_projects/postgresql.svg');
-
-  SvgAsset get s3 => const SvgAsset('$_projects/s3.svg');
 }

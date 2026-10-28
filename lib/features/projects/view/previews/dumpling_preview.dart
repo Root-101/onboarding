@@ -67,6 +67,9 @@ class DumplingPreview extends StatelessWidget {
     );
   }
 
+  static const String bucket =
+      '<path d="M3.5 7h17"/><path d="M5 7l1.5 12.1A2 2 0 0 0 8.5 21h7a2 2 0 0 0 2-1.9L19 7"/><path d="M8 7a4 4 0 0 1 8 0"/>';
+
   static Widget icon(
     String body, {
     double size = 20,
@@ -150,9 +153,7 @@ class _Rail extends StatelessWidget {
           item(
             '<ellipse cx="12" cy="5.5" rx="7" ry="2.5"/><path d="M5 5.5v13c0 1.4 3.1 2.5 7 2.5s7-1.1 7-2.5v-13"/><path d="M5 12c0 1.4 3.1 2.5 7 2.5s7-1.1 7-2.5"/>',
           ),
-          item(
-            '<path d="M3.5 7h17"/><path d="M5 7l1.5 12.1A2 2 0 0 0 8.5 21h7a2 2 0 0 0 2-1.9L19 7"/><path d="M8 7a4 4 0 0 1 8 0"/>',
-          ),
+          item(DumplingPreview.bucket),
           item(
             '<path d="M3 12h4l3-8 4 16 3-8h4"/>',
             badge: Container(
@@ -165,7 +166,7 @@ class _Rail extends StatelessWidget {
                 borderRadius: BorderRadius.circular(8),
               ),
               child: const Text(
-                '2',
+                '1',
                 style: TextStyle(
                   fontSize: 10,
                   height: 1.6,
@@ -194,9 +195,15 @@ class _Main extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Widget button(String label, Color color, {bool bold = false}) => Container(
+    Widget button(
+      String label,
+      double width,
+      Color color, {
+      Color textColor = DumplingPreview.white,
+      bool bold = false,
+    }) => Container(
+      width: width,
       height: 40,
-      padding: EdgeInsets.symmetric(horizontal: bold ? 20 : 16),
       alignment: Alignment.center,
       decoration: BoxDecoration(
         color: color,
@@ -204,7 +211,10 @@ class _Main extends StatelessWidget {
       ),
       child: Text(
         label,
-        style: TextStyle(fontWeight: bold ? FontWeight.w600 : FontWeight.w500),
+        style: TextStyle(
+          color: textColor,
+          fontWeight: bold ? FontWeight.w600 : FontWeight.w500,
+        ),
       ),
     );
     return ColoredBox(
@@ -241,7 +251,7 @@ class _Main extends StatelessWidget {
                                 fontWeight: FontWeight.w500,
                               ),
                             ),
-                            TextSpan(text: 'Canvas'),
+                            TextSpan(text: 'Pipeline editor'),
                           ],
                         ),
                         style: TextStyle(
@@ -261,8 +271,15 @@ class _Main extends StatelessWidget {
                     ],
                   ),
                 ),
-                button('Test run', DumplingPreview.control),
-                button('Save pipeline', DumplingPreview.action, bold: true),
+                button('Test run', 120, DumplingPreview.control),
+                // saved: nothing to save, so it shows disabled
+                button(
+                  'Save canvas',
+                  150,
+                  DumplingPreview.selected,
+                  textColor: DumplingPreview.grey3,
+                  bold: true,
+                ),
               ],
             ),
           ),
@@ -291,24 +308,20 @@ class _Job {
   final double y;
   final String name;
   final String cron;
-  final String human;
   final String last;
   final String status;
   final Color statusColor;
   final String next;
-  final String nextIn;
 
   const _Job(
     this.x,
     this.y,
     this.name,
     this.cron,
-    this.human,
     this.last,
     this.status,
     this.statusColor,
     this.next,
-    this.nextIn,
   );
 
   Offset get input => Offset(x, y + 76);
@@ -317,7 +330,7 @@ class _Job {
 }
 
 /// The canvas of the editor: two sources, their configs and the destinations,
-/// wired, with the hints, the toolbar, the shortcuts and the view controls
+/// wired, with the toolbar and the view controls
 class _Canvas extends StatelessWidget {
   const _Canvas();
 
@@ -333,88 +346,42 @@ class _Canvas extends StatelessWidget {
       98,
       'Nightly full',
       '0 2 * * *',
-      'Every day at 02:00 UTC',
-      '20/Oct 02:06 AM UTC · 1.8 GB',
+      '27/Oct 02:06 AM UTC',
       'Success',
       Color(0xFF34B257),
-      '21/Oct 02:00 AM UTC',
-      'in 12 h',
+      '29/Oct 02:00 AM UTC',
     ),
     _Job(
       380,
       268,
       'Nightly',
       '30 2 * * *',
-      'Every day at 02:30 UTC',
-      '20/Oct 02:31 AM UTC · timeout',
+      '27/Oct 02:31 AM UTC',
       'Failed',
       Color(0xFFEC6A66),
-      '21/Oct 02:30 AM UTC',
-      'in 13 h',
+      '29/Oct 02:30 AM UTC',
     ),
   ];
 
   @override
   Widget build(BuildContext context) {
-    final logos = app.assets.projects;
-    return CustomPaint(
-      painter: const DotGridPainter(
-        color: Color(0x1CFFFFFF),
-        spacing: 22,
-        radius: 1.15,
+    Widget label(double left, double width, String text) => Positioned(
+      left: left,
+      top: 16,
+      width: width,
+      child: Text(
+        text,
+        textAlign: TextAlign.center,
+        style: DumplingPreview.label,
       ),
+    );
+    return CustomPaint(
+      painter: const _GridPainter(),
       child: Stack(
         children: [
-          Positioned(
-            left: 40,
-            top: 60,
-            child: Text('SOURCES', style: DumplingPreview.label),
-          ),
-          Positioned(
-            left: 380,
-            top: 60,
-            child: Text(
-              'CONFIG · ONE PER CONNECTION',
-              style: DumplingPreview.label,
-            ),
-          ),
-          Positioned(
-            left: 760,
-            top: 60,
-            child: Text('DESTINATIONS', style: DumplingPreview.label),
-          ),
-          // the hints of how to create a backup, and their dotted links
-          const Positioned(
-            left: 40,
-            top: 760,
-            child: _Hint(
-              width: 200,
-              color: Color(0xBFE6B77E),
-              text: 'Drag from a source port',
-              textColor: DumplingPreview.amber,
-              dot: true,
-            ),
-          ),
-          const Positioned(
-            left: 380,
-            top: 760,
-            child: _Hint(
-              width: 240,
-              color: Color(0x999D8FD0),
-              text: 'Config is created here',
-              textColor: DumplingPreview.grey3,
-            ),
-          ),
-          const Positioned(
-            left: 760,
-            top: 760,
-            child: _Hint(
-              width: 256,
-              color: Color(0xBFE6B77E),
-              text: 'Drop on a folder or bucket',
-              textColor: DumplingPreview.amber,
-            ),
-          ),
+          label(40, 200, 'SOURCES'),
+          label(380, 240, 'CONFIG · ONE PER CONNECTION'),
+          label(760, 256, 'DESTINATIONS'),
           Positioned.fill(
             child: CustomPaint(
               painter: _WiresPainter(
@@ -427,25 +394,18 @@ class _Canvas extends StatelessWidget {
               ),
             ),
           ),
-          Positioned(
+          const Positioned(
             left: 40,
             top: 130,
             child: _Source(
               name: 'orders-db',
-              engine: 'PostgreSQL 16',
-              size: '12.4 GB',
-              logo: logos.postgresql,
+              detail: 'db.internal:5432/orders',
             ),
           ),
-          Positioned(
+          const Positioned(
             left: 40,
             top: 300,
-            child: _Source(
-              name: 'users-db',
-              engine: 'PostgreSQL 15',
-              size: '3.1 GB',
-              logo: logos.postgresql,
-            ),
+            child: _Source(name: 'users-db', detail: 'db.internal:5432/users'),
           ),
           for (final job in _jobs)
             Positioned(
@@ -453,37 +413,53 @@ class _Canvas extends StatelessWidget {
               top: job.y,
               child: _Config(job: job),
             ),
-          Positioned(
+          const Positioned(
             left: 760,
             top: 88,
             child: _Destination(
+              name: 'Primary backups',
               bucket: 'bucket-backups',
-              provider: 'AWS S3 · us-east-1',
-              folders: const [('/orders', '1 config'), ('/users', '1 config')],
-              logo: logos.s3,
+              folders: ['orders', 'users'],
             ),
           ),
-          Positioned(
+          const Positioned(
             left: 760,
             top: 484,
             child: _Destination(
+              name: 'Cold archive',
               bucket: 'cold-archive',
-              provider: 'Cloudflare R2 · auto',
-              folders: const [],
-              logo: logos.s3,
+              folders: [],
+              unused: true,
             ),
           ),
-          const Positioned(right: 16, top: 16, child: _AddToolbar()),
-          const Positioned(left: 16, bottom: 16, child: _Shortcuts()),
-          const Positioned(right: 16, bottom: 16, child: _ViewControls()),
+          const Positioned(left: 16, top: 16, child: _AddToolbar()),
+          const Positioned(left: 16, bottom: 16, child: _ViewControls()),
         ],
       ),
     );
   }
 }
 
-/// The wires between the nodes (grey: nothing selected) and the dotted links
-/// between the hints
+/// The canvas's grid: violet lines every 48
+class _GridPainter extends CustomPainter {
+  const _GridPainter();
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()..color = const Color(0x0D9D8FD0);
+    for (double x = 0; x < size.width; x += 48) {
+      canvas.drawRect(Rect.fromLTWH(x, 0, 1, size.height), paint);
+    }
+    for (double y = 0; y < size.height; y += 48) {
+      canvas.drawRect(Rect.fromLTWH(0, y, size.width, 1), paint);
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant _GridPainter oldDelegate) => false;
+}
+
+/// The wires between the nodes (grey: nothing selected)
 class _WiresPainter extends CustomPainter {
   final List<(Offset, Offset)> wires;
 
@@ -503,23 +479,6 @@ class _WiresPainter extends CustomPainter {
           ..moveTo(a.dx, a.dy)
           ..cubicTo(a.dx + dx, a.dy, b.dx - dx, b.dy, b.dx, b.dy),
         paint,
-      );
-    }
-    // `stroke-dasharray="2 5"` with round caps: dots 7 apart
-    final hint = Paint()
-      ..color = DumplingPreview.amber.withValues(alpha: 0.7)
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 1.5
-      ..strokeCap = StrokeCap.round;
-    for (final (from, to) in const [(246.0, 374.0), (626.0, 754.0)]) {
-      drawDashedPath(
-        canvas,
-        Path()
-          ..moveTo(from, 782)
-          ..lineTo(to, 782),
-        hint,
-        dash: 2,
-        gap: 5,
       );
     }
   }
@@ -549,38 +508,23 @@ class _Port extends StatelessWidget {
   }
 }
 
-BoxDecoration _node() => BoxDecoration(
+/// A node; [unused] (on the canvas but in no flow): an amber border
+BoxDecoration _node({bool unused = false}) => BoxDecoration(
   color: DumplingPreview.surface,
   borderRadius: BorderRadius.circular(12),
-  border: Border.all(color: DumplingPreview.border),
+  border: unused
+      ? Border.all(color: DumplingPreview.amber, width: 2)
+      : Border.all(color: DumplingPreview.border),
   boxShadow: const [
     BoxShadow(offset: Offset(0, 6), blurRadius: 18, color: Color(0x47000000)),
   ],
 );
 
-Widget _logoTile(SvgAsset logo) => Container(
-  width: 30,
-  height: 30,
-  alignment: Alignment.center,
-  decoration: BoxDecoration(
-    color: DumplingPreview.logoTile,
-    borderRadius: BorderRadius.circular(8),
-  ),
-  child: logo.build(size: 17),
-);
-
 class _Source extends StatelessWidget {
   final String name;
-  final String engine;
-  final String size;
-  final SvgAsset logo;
+  final String detail;
 
-  const _Source({
-    required this.name,
-    required this.engine,
-    required this.size,
-    required this.logo,
-  });
+  const _Source({required this.name, required this.detail});
 
   @override
   Widget build(BuildContext context) {
@@ -602,7 +546,23 @@ class _Source extends StatelessWidget {
                 Row(
                   spacing: 10,
                   children: [
-                    _logoTile(logo),
+                    Container(
+                      width: 30,
+                      height: 30,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        color: const Color(0x298AA8FF),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: const Text(
+                        'PG',
+                        style: TextStyle(
+                          fontSize: 10,
+                          fontWeight: FontWeight.w700,
+                          color: Color(0xFF8AA8FF),
+                        ),
+                      ),
+                    ),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -613,9 +573,9 @@ class _Source extends StatelessWidget {
                             fontWeight: FontWeight.w600,
                           ),
                         ),
-                        Text(
-                          engine,
-                          style: const TextStyle(
+                        const Text(
+                          'PostgreSQL',
+                          style: TextStyle(
                             fontSize: 11,
                             height: 15 / 11,
                             color: DumplingPreview.grey4,
@@ -626,7 +586,7 @@ class _Source extends StatelessWidget {
                   ],
                 ),
                 Text(
-                  size,
+                  detail,
                   style: const TextStyle(
                     fontSize: 11,
                     height: 15 / 11,
@@ -651,7 +611,7 @@ class _Config extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const meta = TextStyle(fontSize: 11, height: 16 / 11);
-    Widget line(Widget mark, String label, String value, Widget end) => Row(
+    Widget line(Widget mark, String label, String value, [Widget? end]) => Row(
       spacing: 6,
       children: [
         mark,
@@ -664,7 +624,7 @@ class _Config extends StatelessWidget {
             style: meta.copyWith(color: DumplingPreview.grey2),
           ),
         ),
-        end,
+        ?end,
       ],
     );
     return SizedBox(
@@ -701,7 +661,7 @@ class _Config extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Row(
-                              spacing: 8,
+                              spacing: 6,
                               children: [
                                 Expanded(
                                   child: Text(
@@ -728,17 +688,15 @@ class _Config extends StatelessWidget {
                                     style: AppText.mono.copyWith(
                                       fontSize: 11,
                                       height: 1.2,
-                                      color: DumplingPreview.grey2,
+                                      color: DumplingPreview.grey3,
                                     ),
                                   ),
                                 ),
                               ],
                             ),
-                            Text(
-                              job.human,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: const TextStyle(
+                            const Text(
+                              'Daily',
+                              style: TextStyle(
                                 fontSize: 11,
                                 height: 15 / 11,
                                 color: DumplingPreview.grey4,
@@ -797,10 +755,6 @@ class _Config extends StatelessWidget {
                         ),
                         'Next',
                         job.next,
-                        Text(
-                          job.nextIn,
-                          style: meta.copyWith(color: DumplingPreview.grey4),
-                        ),
                       ),
                     ],
                   ),
@@ -817,25 +771,25 @@ class _Config extends StatelessWidget {
 }
 
 class _Destination extends StatelessWidget {
+  final String name;
   final String bucket;
-  final String provider;
 
-  /// (path, meta); none: it writes to the bucket root
-  final List<(String, String)> folders;
-  final SvgAsset logo;
+  /// none: it writes to the bucket root
+  final List<String> folders;
+  final bool unused;
 
   const _Destination({
+    required this.name,
     required this.bucket,
-    required this.provider,
     required this.folders,
-    required this.logo,
+    this.unused = false,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
       width: 256,
-      decoration: _node(),
+      decoration: _node(unused: unused),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -860,20 +814,33 @@ class _Destination extends StatelessWidget {
                 Row(
                   spacing: 10,
                   children: [
-                    _logoTile(logo),
+                    Container(
+                      width: 30,
+                      height: 30,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        color: DumplingPreview.logoTile,
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: DumplingPreview.icon(
+                        DumplingPreview.bucket,
+                        size: 17,
+                        color: DumplingPreview.action,
+                      ),
+                    ),
                     Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          bucket,
+                          name,
                           style: const TextStyle(
                             height: 19 / 14,
                             fontWeight: FontWeight.w600,
                           ),
                         ),
                         Text(
-                          provider,
+                          'S3 · $bucket',
                           style: const TextStyle(
                             fontSize: 11,
                             height: 15 / 11,
@@ -892,7 +859,7 @@ class _Destination extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                for (final (path, meta) in folders)
+                for (final folder in folders)
                   SizedBox(
                     height: 40,
                     child: Stack(
@@ -913,20 +880,11 @@ class _Destination extends StatelessWidget {
                                 size: 15,
                                 color: DumplingPreview.grey4,
                               ),
-                              Expanded(
-                                child: Text(
-                                  path,
-                                  style: AppText.mono.copyWith(
-                                    fontSize: 12,
-                                    color: DumplingPreview.grey2,
-                                  ),
-                                ),
-                              ),
                               Text(
-                                meta,
-                                style: const TextStyle(
-                                  fontSize: 11,
-                                  color: DumplingPreview.grey4,
+                                '/$folder',
+                                style: AppText.mono.copyWith(
+                                  fontSize: 12,
+                                  color: DumplingPreview.grey3,
                                 ),
                               ),
                             ],
@@ -943,7 +901,7 @@ class _Destination extends StatelessWidget {
                       child: Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          'No folders · writes to the bucket root',
+                          'Bucket root',
                           style: TextStyle(
                             fontSize: 11,
                             color: DumplingPreview.grey4,
@@ -983,64 +941,7 @@ class _Destination extends StatelessWidget {
   }
 }
 
-/// A hint box of the canvas, with a dotted border
-class _Hint extends StatelessWidget {
-  final double width;
-  final Color color;
-  final String text;
-  final Color textColor;
-  final bool dot;
-
-  const _Hint({
-    required this.width,
-    required this.color,
-    required this.text,
-    required this.textColor,
-    this.dot = false,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return DashedBorder(
-      color: color,
-      strokeWidth: 2,
-      radius: 10,
-      dash: 2,
-      gap: 3,
-      child: SizedBox(
-        width: width,
-        height: 44,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          spacing: 6,
-          children: [
-            if (dot)
-              Container(
-                width: 8,
-                height: 8,
-                decoration: const BoxDecoration(
-                  color: DumplingPreview.amber,
-                  shape: BoxShape.circle,
-                ),
-              ),
-            Text(
-              text,
-              style: TextStyle(
-                fontSize: 12,
-                fontWeight: textColor == DumplingPreview.amber
-                    ? FontWeight.w500
-                    : FontWeight.w400,
-                color: textColor,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-/// Add a database or a destination, top right
+/// Add a source or a destination, top left
 class _AddToolbar extends StatelessWidget {
   const _AddToolbar();
 
@@ -1073,7 +974,7 @@ class _AddToolbar extends StatelessWidget {
           button(
             '<ellipse cx="12" cy="5.5" rx="7" ry="2.5"/><path d="M5 5.5v13c0 1.4 3.1 2.5 7 2.5s7-1.1 7-2.5v-13"/>',
             const Color(0xFF8AA8FF),
-            'Database',
+            'Source',
           ),
           button(
             '<path d="M3.5 7h17"/><path d="M5 7l1.5 12.1A2 2 0 0 0 8.5 21h7a2 2 0 0 0 2-1.9L19 7"/>',
@@ -1086,136 +987,21 @@ class _AddToolbar extends StatelessWidget {
   }
 }
 
-/// The shortcuts panel, bottom left
-class _Shortcuts extends StatelessWidget {
-  const _Shortcuts();
-
-  static const List<(String, List<String>, String)> _rows = [
-    ('Move canvas', ['Space'], '+ drag'),
-    ('Move canvas', [], 'drag background'),
-    ('Zoom', ['Ctrl'], '+ scroll'),
-    ('Zoom in / out', ['+', '−'], ''),
-    ('Center canvas', ['F'], ''),
-    ('Reset to 100%', ['0'], ''),
-    ('Close config', ['Esc'], ''),
-    ('Show / hide shortcuts', ['?'], ''),
-  ];
-
-  @override
-  Widget build(BuildContext context) {
-    const text = TextStyle(fontSize: 12, height: 1.3);
-    Widget key(String k) => Container(
-      constraints: const BoxConstraints(minWidth: 26),
-      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 1),
-      alignment: Alignment.center,
-      decoration: BoxDecoration(
-        color: DumplingPreview.control,
-        borderRadius: BorderRadius.circular(4),
-      ),
-      child: Text(
-        k,
-        style: AppText.mono.copyWith(
-          fontSize: 11,
-          height: 1.3,
-          color: DumplingPreview.grey2,
-        ),
-      ),
-    );
-    return Container(
-      width: 268,
-      padding: const EdgeInsets.fromLTRB(14, 10, 14, 12),
-      decoration: BoxDecoration(
-        color: const Color(0xF517151F),
-        borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: DumplingPreview.border),
-        boxShadow: const [
-          BoxShadow(
-            offset: Offset(0, 4),
-            blurRadius: 16,
-            color: Color(0x59000000),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(bottom: 4),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'SHORTCUTS',
-                  style: DumplingPreview.label.copyWith(
-                    color: DumplingPreview.violet,
-                  ),
-                ),
-                SizedBox.square(
-                  dimension: 28,
-                  child: Center(
-                    child: DumplingPreview.icon(
-                      '<path d="M6 6l12 12M18 6L6 18"/>',
-                      size: 14,
-                      stroke: 2,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          for (final (label, keys, after) in _rows)
-            SizedBox(
-              height: 23,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    label,
-                    style: text.copyWith(color: DumplingPreview.grey3),
-                  ),
-                  Row(
-                    spacing: 4,
-                    children: [
-                      for (final k in keys) key(k),
-                      if (after.isNotEmpty)
-                        Text(
-                          after,
-                          style: text.copyWith(color: DumplingPreview.grey4),
-                        ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-        ],
-      ),
-    );
-  }
-}
-
-/// Settings, shortcuts, center and zoom, bottom right
+/// Settings, shortcuts, center and zoom, bottom left
 class _ViewControls extends StatelessWidget {
   const _ViewControls();
 
   @override
   Widget build(BuildContext context) {
     const side = BorderSide(color: DumplingPreview.border);
-    Widget cell(
-      Widget child, {
-      double? width,
-      bool left = true,
-      Color? color,
-    }) => Container(
+    Widget cell(Widget child, {double? width, bool left = true}) => Container(
       width: width,
       height: 36,
       padding: width == null
           ? const EdgeInsets.symmetric(horizontal: 12)
           : EdgeInsets.zero,
       alignment: Alignment.center,
-      decoration: BoxDecoration(
-        color: color,
-        border: left ? const Border(left: side) : null,
-      ),
+      decoration: BoxDecoration(border: left ? const Border(left: side) : null),
       child: child,
     );
     const symbol = TextStyle(fontSize: 16, color: DumplingPreview.grey2);
@@ -1244,7 +1030,6 @@ class _ViewControls extends StatelessWidget {
               color: DumplingPreview.grey2,
             ),
             width: 36,
-            color: DumplingPreview.selected,
           ),
           cell(
             Row(
