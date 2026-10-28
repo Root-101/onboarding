@@ -1,25 +1,94 @@
 name: root101
-description: Onboard page for Root101 portal
+description: "Landing page of Root101 (root101.dev)"
 publish_to: 'none'
 
-version: 1.0.2-20241115
+version: 2.0.0
 
 environment:
-  sdk: ">=3.5.0 <4.0.0"
-  flutter: ">=3.24.0"
+  flutter: ^3.47.0
+  sdk: ^3.13.0
 
 dependencies:
   flutter:
     sdk: flutter
 
-  cupertino_icons: ^1.0.2
+  #state management & dependency injection
+  flutter_bloc: 9.1.1
+  get: 4.7.3
+
+  #routing
+  go_router: 17.5.0
+
+  #view
+  flutter_svg: 2.3.0    #to show icons in svg format
+  flutter_secure_storage: 11.0.0       #the language survives a reload
+  gap: 3.0.1
+  material_ui: 1.0.1
+  url_launcher: 6.3.2   #real <a> links (GitHub, pub.dev, mailto)
+
+  #utils
+  #texts generated from lib/l10n/*.i18n.yaml (`fvm dart run slang`)
+  slang: 4.19.2
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  flutter_lints: ^2.0.0
+  flutter_lints: 6.0.0
+
+  #tests
+  bloc_test: 10.0.0
 
 flutter:
-
   uses-material-design: true
+
+  assets:
+    - assets/brand/
+    - assets/icons/actions/
+    - assets/icons/languages/
+    - assets/icons/sections/
+    - assets/projects/
+    - assets/team/
+  fonts:
+    - family: SpaceGrotesk
+      fonts:
+        - asset: assets/fonts/SpaceGrotesk/SpaceGrotesk-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/SpaceGrotesk/SpaceGrotesk-Medium.ttf
+          weight: 500
+        # instanced at wght=600 from the variable font: upstream has no static SemiBold
+        - asset: assets/fonts/SpaceGrotesk/SpaceGrotesk-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/SpaceGrotesk/SpaceGrotesk-Bold.ttf
+          weight: 700
+
+    - family: JetBrainsMono
+      fonts:
+        - asset: assets/fonts/JetBrainsMono/JetBrainsMono-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/JetBrainsMono/JetBrainsMono-Medium.ttf
+          weight: 500
+
+    # The previews of Feather IO and Dumpling are drawn with their own font
+    - family: DMSans
+      fonts:
+        - asset: assets/fonts/DMSans/DMSans-Light.ttf
+          weight: 300
+        - asset: assets/fonts/DMSans/DMSans-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/DMSans/DMSans-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/DMSans/DMSans-Bold.ttf
+          weight: 700
+
+    # The preview of Maple
+    - family: PlusJakartaSans
+      fonts:
+        - asset: assets/fonts/PlusJakartaSans/PlusJakartaSans-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/PlusJakartaSans/PlusJakartaSans-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/PlusJakartaSans/PlusJakartaSans-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/PlusJakartaSans/PlusJakartaSans-ExtraBold.ttf
+          weight: 800

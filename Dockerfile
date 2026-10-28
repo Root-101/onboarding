@@ -1,49 +1,42 @@
-#STEP 1: BUILD
-# Environemnt to install flutter and build web
-FROM debian:latest AS build-env
+# Build from the root of the repo:
+#   docker build -t root101-landing .
+# Run:
+#   docker run -p 8080:80 root101-landing
+#
+# A static site: no backend, no env.js. nginx serves the Flutter build (same image as the
+# consoles of feather-io and dumpling).
 
-#install all needed stuff
-RUN apt-get update
-RUN apt-get install -y curl git unzip
+FROM debian:trixie-slim AS build
 
-#define variables
-ARG FLUTTER_VERSION=3.24.1
-ARG FLUTTER_SDK_LOCATION=/usr/local/flutter
-ARG APP_LOCATION=/app/
+# Bump it with .fvmrc
+ARG FLUTTER_VERSION=3.47.1
 
-#clone flutter
-RUN git clone https://github.com/flutter/flutter.git $FLUTTER_SDK_LOCATION
-#change dir to current flutter folder and make a checkout to the specific version
-RUN cd $FLUTTER_SDK_LOCATION && git checkout tags/$FLUTTER_VERSION
+RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates curl git unzip xz-utils \
+    && rm -rf /var/lib/apt/lists/*
 
-#setup the flutter path as an environment variable
-ENV PATH="$FLUTTER_SDK_LOCATION/bin:$FLUTTER_SDK_LOCATION/bin/cache/dart-sdk/bin:${PATH}"
+# Only the tag of the version (not the whole history) and only the web artifacts
+RUN git clone --depth 1 --branch "$FLUTTER_VERSION" https://github.com/flutter/flutter.git /flutter
+ENV PATH="/flutter/bin:${PATH}"
+RUN flutter config --no-analytics --no-cli-animations \
+    && flutter precache --web --no-android --no-ios --no-linux --no-windows --no-macos
 
-#Start to run Flutter commands
-#doctor to see if all was installed ok
-RUN flutter doctor -v
+WORKDIR /src
 
-#create folder to copy source code
-RUN mkdir $APP_LOCATION
-#copy source code to folder
-COPY . $APP_LOCATION
-#stup new folder as the working directory
-WORKDIR $APP_LOCATION
+# Resolve dependencies (cached while the pubspec doesn't change)
+COPY pubspec.* ./
+RUN flutter pub get --enforce-lockfile
 
-#Run build: 1 - clean, 2 - pub get, 3 - build web
-RUN flutter clean
-RUN flutter pub get
-RUN flutter build web
+# Copy the source (except anything in .dockerignore) and build
+COPY . .
+# CanvasKit from the build itself, not from Google's CDN: the CSP only allows scripts of the origin
+# Debug symbols of CanvasKit (~8 MB) and the build id are not served
+RUN flutter build web --release --no-web-resources-cdn \
+    && find build/web -name "*.symbols" -delete && rm -f build/web/.last_build_id
 
-#once heare the app will be compiled and ready to deploy
-
-#STEP 2: DEPLOY
-#use nginx to deploy
-FROM nginx:1.26.2-alpine-perl
-
-#copy the info of the builded web app to nginx
-COPY --from=build-env /app/build/web /usr/share/nginx/html
-
-#Expose port and run nginx
+# Static files on nginx
+FROM nginx:1.29.1-alpine
+COPY docker/nginx.conf /etc/nginx/conf.d/default.conf
+COPY docker/security_headers.conf /etc/nginx/security_headers.conf
+COPY --from=build /src/build/web /usr/share/nginx/html
 EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+HEALTHCHECK --interval=30s --timeout=3s CMD wget -q --spider http://127.0.0.1/health || exit 1
