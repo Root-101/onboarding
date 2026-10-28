@@ -251,7 +251,8 @@ class _Details extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(50, 0, 20, 18),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
-        spacing: 12,
+        // 10, not 12: Feather IO's two links stacked fill the tab to the pixel
+        spacing: 10,
         children: [
           Text(
             project.description.of(context),

@@ -33,31 +33,35 @@ class DumplingPreview extends StatelessWidget {
     return ColoredBox(
       color: background,
       child: ClipRect(
-        child: OverflowBox(
-          alignment: Alignment.topLeft,
-          minWidth: 0,
-          minHeight: 0,
-          maxWidth: double.infinity,
-          maxHeight: double.infinity,
-          child: Transform.scale(
-            scale: _scale,
+        child: LayoutBuilder(
+          // a window wider than 1350 at 60 %: the editor stretches to fill it,
+          // like the app does
+          builder: (context, box) => OverflowBox(
             alignment: Alignment.topLeft,
-            child: const SizedBox(
-              width: _width,
-              height: _height,
-              child: DefaultTextStyle(
-                style: TextStyle(
-                  fontFamily: 'DMSans',
-                  fontSize: 14,
-                  height: 20 / 14,
-                  color: white,
-                ),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    _Rail(),
-                    Expanded(child: _Main()),
-                  ],
+            minWidth: 0,
+            minHeight: 0,
+            maxWidth: double.infinity,
+            maxHeight: double.infinity,
+            child: Transform.scale(
+              scale: _scale,
+              alignment: Alignment.topLeft,
+              child: SizedBox(
+                width: math.max(_width, box.maxWidth / _scale),
+                height: _height,
+                child: const DefaultTextStyle(
+                  style: TextStyle(
+                    fontFamily: 'DMSans',
+                    fontSize: 14,
+                    height: 20 / 14,
+                    color: white,
+                  ),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      _Rail(),
+                      Expanded(child: _Main()),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -222,8 +226,9 @@ class _Main extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
+          // min-height: the title and its line need 68
           Container(
-            height: 64,
+            constraints: const BoxConstraints(minHeight: 64),
             padding: const EdgeInsets.fromLTRB(14, 10, 20, 10),
             child: Row(
               spacing: 16,
