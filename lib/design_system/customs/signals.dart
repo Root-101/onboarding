@@ -60,25 +60,6 @@ class BlinkingCaret extends StatelessWidget {
   }
 }
 
-/// `.r1-float`: bobs 12 px up and down every 7 s
-class Floating extends StatelessWidget {
-  final Widget child;
-
-  const Floating({required this.child, super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return LoopAnimation(
-      duration: const Duration(milliseconds: 3500),
-      reverse: true,
-      curve: Curves.easeInOut,
-      child: child,
-      builder: (context, t, child) =>
-          Transform.translate(offset: Offset(0, -12 * t), child: child),
-    );
-  }
-}
-
 /// `.r1-marq`: [children] scrolling left forever, [gap] apart, one lap every
 /// [duration]
 class Marquee extends StatelessWidget {

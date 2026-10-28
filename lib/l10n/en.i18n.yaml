@@ -49,16 +49,3 @@ contact:
   description: 'Ideas, bugs, collaborations or just saying hi: it all starts on GitHub.'
   github: 'Go to GitHub'
   emailPlaceholder: '[contact email]'
-
-previews:
-  dumpling:
-    workspace: 'Workspace'
-    main: 'main'
-    runNow: 'Run now'
-    source: 'SOURCE'
-    settings: 'SETTINGS'
-    destination: 'DESTINATION'
-    schedule: 'Every day · 03:00'
-    keep: 'Keep 14 copies'
-    completed: 'Backup completed'
-    completedMeta: 'today 03:00:41 · 1.2 GB · 38 s'

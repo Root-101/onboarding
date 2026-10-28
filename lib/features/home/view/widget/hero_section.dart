@@ -69,7 +69,7 @@ class _HeroSectionState extends State<HeroSection> {
                 ),
               ),
               PageColumn(
-                padding: const EdgeInsets.fromLTRB(0, 112, 0, 152),
+                padding: const EdgeInsets.fromLTRB(0, 56, 0, 152),
                 child: LayoutBuilder(
                   builder: (context, column) {
                     // flex 1 1 460px and 1 1 420px, 56 apart: the free space
@@ -232,41 +232,38 @@ class _Pitch extends StatelessWidget {
   }
 }
 
-/// The terminal listing the projects, floating, with the mark spinning over
-/// its corner
+/// The terminal listing the projects, with the mark spinning over its corner
 class _Console extends StatelessWidget {
   const _Console();
 
   @override
   Widget build(BuildContext context) {
-    return Floating(
-      child: Stack(
-        clipBehavior: Clip.none,
-        children: [
-          AppTerminal(
-            title: '~/root101',
-            command: 'root101 ls --projects',
-            lines: [
-              for (final project in ProjectsCatalog.all)
-                TerminalLine(name: project.slug, description: project.tagline),
-            ],
-          ),
-          Positioned(
-            right: -24,
-            top: -64,
-            child: IgnorePointer(
-              child: Opacity(
-                opacity: 0.9,
-                child: GlowShadow(
-                  color: app.colors.brand.indigo.withValues(alpha: 0.6),
-                  blur: 24,
-                  child: const Root101Mark(width: 150, spin: true),
-                ),
+    return Stack(
+      clipBehavior: Clip.none,
+      children: [
+        AppTerminal(
+          title: '~/root101',
+          command: 'root101 ls --projects',
+          lines: [
+            for (final project in ProjectsCatalog.all)
+              TerminalLine(name: project.slug, description: project.tagline),
+          ],
+        ),
+        Positioned(
+          right: -24,
+          top: -64,
+          child: IgnorePointer(
+            child: Opacity(
+              opacity: 0.9,
+              child: GlowShadow(
+                color: app.colors.brand.indigo.withValues(alpha: 0.6),
+                blur: 24,
+                child: const Root101Mark(width: 150, spin: true),
               ),
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

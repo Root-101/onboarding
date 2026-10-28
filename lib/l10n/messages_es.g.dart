@@ -68,10 +68,6 @@ class AppMessagesEs
   late final AppMessages$team$es team = AppMessages$team$es._(_root);
   @override
   late final AppMessages$contact$es contact = AppMessages$contact$es._(_root);
-  @override
-  late final AppMessages$previews$es previews = AppMessages$previews$es._(
-    _root,
-  );
 }
 
 // Path: app
@@ -221,48 +217,6 @@ class AppMessages$contact$es implements AppMessages$contact$en {
   String get emailPlaceholder => '[correo de contacto]';
 }
 
-// Path: previews
-class AppMessages$previews$es implements AppMessages$previews$en {
-  AppMessages$previews$es._(this._root);
-
-  final AppMessagesEs _root; // ignore: unused_field
-
-  // Translations
-  @override
-  late final AppMessages$previews$dumpling$es dumpling =
-      AppMessages$previews$dumpling$es._(_root);
-}
-
-// Path: previews.dumpling
-class AppMessages$previews$dumpling$es
-    implements AppMessages$previews$dumpling$en {
-  AppMessages$previews$dumpling$es._(this._root);
-
-  final AppMessagesEs _root; // ignore: unused_field
-
-  // Translations
-  @override
-  String get workspace => 'Workspace';
-  @override
-  String get main => 'principal';
-  @override
-  String get runNow => 'Ejecutar ahora';
-  @override
-  String get source => 'ORIGEN';
-  @override
-  String get settings => 'CONFIGURACIÓN';
-  @override
-  String get destination => 'DESTINO';
-  @override
-  String get schedule => 'Cada día · 03:00';
-  @override
-  String get keep => 'Guardar 14 copias';
-  @override
-  String get completed => 'Backup completado';
-  @override
-  String get completedMeta => 'hoy 03:00:41 · 1.2 GB · 38 s';
-}
-
 /// The flat map containing all translations for locale <es>.
 /// Only for edge cases! For simple maps, use the map function of this library.
 ///
@@ -318,16 +272,6 @@ extension on AppMessagesEs {
       'contact.description' => 'Ideas, bugs, colaboraciones o simplemente saludar: todo empieza en GitHub.',
       'contact.github' => 'Ir a GitHub',
       'contact.emailPlaceholder' => '[correo de contacto]',
-      'previews.dumpling.workspace' => 'Workspace',
-      'previews.dumpling.main' => 'principal',
-      'previews.dumpling.runNow' => 'Ejecutar ahora',
-      'previews.dumpling.source' => 'ORIGEN',
-      'previews.dumpling.settings' => 'CONFIGURACIÓN',
-      'previews.dumpling.destination' => 'DESTINO',
-      'previews.dumpling.schedule' => 'Cada día · 03:00',
-      'previews.dumpling.keep' => 'Guardar 14 copias',
-      'previews.dumpling.completed' => 'Backup completado',
-      'previews.dumpling.completedMeta' => 'hoy 03:00:41 · 1.2 GB · 38 s',
       _ => null,
     };
   }

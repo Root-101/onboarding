@@ -56,9 +56,6 @@ class AppMessages with BaseTranslations<AppMessagesLocale, AppMessages> {
   );
   late final AppMessages$team$en team = AppMessages$team$en._(_root);
   late final AppMessages$contact$en contact = AppMessages$contact$en._(_root);
-  late final AppMessages$previews$en previews = AppMessages$previews$en._(
-    _root,
-  );
 }
 
 // Path: app
@@ -242,56 +239,6 @@ class AppMessages$contact$en {
   String get emailPlaceholder => '[contact email]';
 }
 
-// Path: previews
-class AppMessages$previews$en {
-  AppMessages$previews$en._(this._root);
-
-  final AppMessages _root; // ignore: unused_field
-
-  // Translations
-  late final AppMessages$previews$dumpling$en dumpling =
-      AppMessages$previews$dumpling$en._(_root);
-}
-
-// Path: previews.dumpling
-class AppMessages$previews$dumpling$en {
-  AppMessages$previews$dumpling$en._(this._root);
-
-  final AppMessages _root; // ignore: unused_field
-
-  // Translations
-
-  /// en: 'Workspace'
-  String get workspace => 'Workspace';
-
-  /// en: 'main'
-  String get main => 'main';
-
-  /// en: 'Run now'
-  String get runNow => 'Run now';
-
-  /// en: 'SOURCE'
-  String get source => 'SOURCE';
-
-  /// en: 'SETTINGS'
-  String get settings => 'SETTINGS';
-
-  /// en: 'DESTINATION'
-  String get destination => 'DESTINATION';
-
-  /// en: 'Every day · 03:00'
-  String get schedule => 'Every day · 03:00';
-
-  /// en: 'Keep 14 copies'
-  String get keep => 'Keep 14 copies';
-
-  /// en: 'Backup completed'
-  String get completed => 'Backup completed';
-
-  /// en: 'today 03:00:41 · 1.2 GB · 38 s'
-  String get completedMeta => 'today 03:00:41 · 1.2 GB · 38 s';
-}
-
 /// The flat map containing all translations for locale <en>.
 /// Only for edge cases! For simple maps, use the map function of this library.
 ///
@@ -347,16 +294,6 @@ extension on AppMessages {
       'contact.description' => 'Ideas, bugs, collaborations or just saying hi: it all starts on GitHub.',
       'contact.github' => 'Go to GitHub',
       'contact.emailPlaceholder' => '[contact email]',
-      'previews.dumpling.workspace' => 'Workspace',
-      'previews.dumpling.main' => 'main',
-      'previews.dumpling.runNow' => 'Run now',
-      'previews.dumpling.source' => 'SOURCE',
-      'previews.dumpling.settings' => 'SETTINGS',
-      'previews.dumpling.destination' => 'DESTINATION',
-      'previews.dumpling.schedule' => 'Every day · 03:00',
-      'previews.dumpling.keep' => 'Keep 14 copies',
-      'previews.dumpling.completed' => 'Backup completed',
-      'previews.dumpling.completedMeta' => 'today 03:00:41 · 1.2 GB · 38 s',
       _ => null,
     };
   }

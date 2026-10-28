@@ -70,8 +70,8 @@ abstract class ProjectsCatalog {
       ],
       logo: app.assets.projects.dumpling,
       windowTitle: const LocalizedText(
-        en: 'dump.ling · main workspace',
-        es: 'dump.ling · workspace principal',
+        en: 'dump·ling · main workspace',
+        es: 'dump·ling · workspace principal',
       ),
       preview: (_) => const DumplingPreview(),
     ),
