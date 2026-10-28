@@ -10,7 +10,7 @@ const List<LocalizationsDelegate<dynamic>> appLocalizationsDelegates = [
   ...GlobalMaterialLocalizations.delegates,
 ];
 
-/// Narrower than this, the page asks for a wider window: desktop only for now
+/// Narrower than this, the page takes its phone layout (`context.isCompact`)
 const double minDesktopWidth = 1024;
 
 // generate code
@@ -56,51 +56,15 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return LanguageListener(
-      onLanguageChangeBuilder: (locale) {
-        Size size = MediaQuery.of(context).size;
-        if (size.width < minDesktopWidth) {
-          return MaterialApp(
-            debugShowCheckedModeBanner: false,
-            theme: ThemeConfig.theme,
-            locale: locale,
-            localizationsDelegates: appLocalizationsDelegates,
-            supportedLocales: appSupportedLocales,
-            builder: (context, child) => Scaffold(
-              body: Center(
-                child: Padding(
-                  padding: const EdgeInsets.all(24),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      const Root101Mark(width: 120),
-                      24.gap(),
-                      Text(
-                        context.intl.app.needMoreSpace,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 16,
-                          height: 1.55,
-                          color: app.colors.text.secondary,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          );
-        } else {
-          return MaterialApp.router(
-            debugShowCheckedModeBanner: false,
-            onGenerateTitle: (context) => context.intl.app.title,
-            theme: ThemeConfig.theme,
-            locale: locale,
-            routerConfig: RouteConfig.router,
-            localizationsDelegates: appLocalizationsDelegates,
-            supportedLocales: appSupportedLocales,
-          );
-        }
-      },
+      onLanguageChangeBuilder: (locale) => MaterialApp.router(
+        debugShowCheckedModeBanner: false,
+        onGenerateTitle: (context) => context.intl.app.title,
+        theme: ThemeConfig.theme,
+        locale: locale,
+        routerConfig: RouteConfig.router,
+        localizationsDelegates: appLocalizationsDelegates,
+        supportedLocales: appSupportedLocales,
+      ),
     );
   }
 }

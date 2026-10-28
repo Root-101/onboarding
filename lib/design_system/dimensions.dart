@@ -73,4 +73,7 @@ class AppLayout {
 
   /// Side padding of the page column
   double get gutter => 24;
+
+  /// Side padding of the page column on a phone
+  double get compactGutter => 20;
 }

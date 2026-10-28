@@ -53,6 +53,11 @@ class ActionsIcons {
   SvgAsset get globe => const SvgAsset('$_actions/globe.svg');
 
   SvgAsset get user => const SvgAsset('$_actions/user.svg');
+
+  /// The header's menu on a phone, open and closed
+  SvgAsset get menu => const SvgAsset('$_actions/menu.svg');
+
+  SvgAsset get close => const SvgAsset('$_actions/close.svg');
 }
 
 class SvgAsset {

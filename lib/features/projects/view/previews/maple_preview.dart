@@ -22,7 +22,10 @@ class MaplePreview extends StatelessWidget {
   static const String edit = 'M4 20h4L19 9l-4-4L4 16zM13.5 6.5l4 4';
   static const String pin = 'M9 3h6l-1 6 4 4H6l4-4zM12 13v8';
 
-  const MaplePreview({super.key});
+  /// Only the accounts phone (the preview on a phone screen)
+  final bool compact;
+
+  const MaplePreview({super.key, this.compact = false});
 
   @override
   Widget build(BuildContext context) {
@@ -39,30 +42,33 @@ class MaplePreview extends StatelessWidget {
               bottom: -100,
               child: _circle(240, const Color(0xFFF7E4DD)),
             ),
-            // room on the right for the card that sticks out of the second phone
-            const Padding(
-              padding: EdgeInsets.only(right: 202),
-              child: Center(
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  spacing: 64,
-                  children: [
-                    _Phone(child: _AccountsScreen()),
-                    Stack(
-                      clipBehavior: Clip.none,
-                      children: [
-                        _Phone(child: _AccountScreen()),
-                        Positioned(
-                          right: -206,
-                          top: 22,
-                          child: _UpcomingCard(),
-                        ),
-                      ],
-                    ),
-                  ],
+            if (compact)
+              const Center(child: _Phone(child: _AccountsScreen()))
+            else
+              // room on the right for the card that sticks out of the second phone
+              const Padding(
+                padding: EdgeInsets.only(right: 202),
+                child: Center(
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    spacing: 64,
+                    children: [
+                      _Phone(child: _AccountsScreen()),
+                      Stack(
+                        clipBehavior: Clip.none,
+                        children: [
+                          _Phone(child: _AccountScreen()),
+                          Positioned(
+                            right: -206,
+                            top: 22,
+                            child: _UpcomingCard(),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
           ],
         ),
       ),

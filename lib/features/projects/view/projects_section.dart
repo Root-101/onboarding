@@ -23,6 +23,7 @@ class ProjectsSection extends StatelessWidget {
         final cubit = context.read<ProjectCubit>();
         final total = state.projects.length;
         String two(int n) => n.toString().padLeft(2, '0');
+        if (context.isCompact) return _CompactProjects(state: state);
         return PageColumn(
           padding: const EdgeInsets.fromLTRB(0, 100, 0, 40),
           child: Column(
@@ -125,18 +126,24 @@ class _ProjectTab extends StatelessWidget {
   final Duration? progress;
   final VoidCallback onPick;
 
+  /// On a phone: smaller, and as tall as its content
+  final bool compact;
+
   const _ProjectTab({
     required this.index,
     required this.project,
     required this.open,
     required this.onPick,
     this.progress,
+    this.compact = false,
   });
 
   @override
   Widget build(BuildContext context) {
     final colors = app.colors;
-    final radius = app.dimensions.radius.l;
+    final radius = compact
+        ? BorderRadius.circular(14)
+        : app.dimensions.radius.l;
     return HoverBuilder(
       builder: (context, hovered) => AnimatedContainer(
         duration: const Duration(milliseconds: 200),
@@ -163,12 +170,17 @@ class _ProjectTab extends StatelessWidget {
                   child: AppLink(
                     onPressed: onPick,
                     builder: (context, _) => Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 20,
-                        vertical: 18,
-                      ),
+                      padding: compact
+                          ? const EdgeInsets.symmetric(
+                              horizontal: 16,
+                              vertical: 16,
+                            )
+                          : const EdgeInsets.symmetric(
+                              horizontal: 20,
+                              vertical: 18,
+                            ),
                       child: Row(
-                        spacing: 14,
+                        spacing: compact ? 12 : 14,
                         children: [
                           Text(
                             (index + 1).toString().padLeft(2, '0'),
@@ -179,7 +191,15 @@ class _ProjectTab extends StatelessWidget {
                             ),
                           ),
                           Expanded(
-                            child: Text(project.name, style: AppText.cardTitle),
+                            child: Text(
+                              project.name,
+                              style: compact
+                                  ? AppText.cardTitle.copyWith(
+                                      fontSize: 19,
+                                      letterSpacing: AppText.em(-0.02, 19),
+                                    )
+                                  : AppText.cardTitle,
+                            ),
                           ),
                           Text(project.kind, style: AppText.meta),
                         ],
@@ -187,7 +207,10 @@ class _ProjectTab extends StatelessWidget {
                     ),
                   ),
                 ),
-                if (open) Expanded(child: _Details(project: project)),
+                if (open && compact)
+                  _CompactDetails(project: project)
+                else if (open)
+                  Expanded(child: _Details(project: project)),
               ],
             ),
             if (progress case final duration?)
@@ -303,11 +326,16 @@ class _ProjectWindow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = app.colors;
+    final compact = context.isCompact;
     return WindowFrame(
       centerTitle: true,
-      dotSize: 11,
-      barPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-      borderRadius: app.dimensions.radius.xl,
+      dotSize: compact ? 9 : 11,
+      barPadding: compact
+          ? const EdgeInsets.symmetric(horizontal: 12, vertical: 10)
+          : const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      borderRadius: compact
+          ? app.dimensions.radius.l
+          : app.dimensions.radius.xl,
       background: colors.surface.window,
       shadows: [
         BoxShadow(
@@ -332,19 +360,206 @@ class _ProjectWindow extends StatelessWidget {
           spacing: 8,
           children: [
             project.logo.sized(height: 18),
-            Text(project.windowTitle.of(context), style: AppText.meta),
+            Flexible(
+              child: Text(
+                project.windowTitle.of(context),
+                overflow: TextOverflow.ellipsis,
+                style: AppText.meta.copyWith(fontSize: compact ? 11 : null),
+              ),
+            ),
           ],
         ),
       ),
-      child: SizedBox(
-        height: ProjectsSection.previewHeight,
-        width: double.infinity,
-        child: ClipRect(
-          child: Entrance(
-            key: ValueKey(index),
-            child: SizedBox.expand(child: project.preview(context)),
+      child: compact
+          ? LayoutBuilder(
+              builder: (context, box) {
+                final size = project.compactPreviewSize;
+                return SizedBox(
+                  height: box.maxWidth * size.height / size.width,
+                  child: ClipRect(
+                    child: Entrance(
+                      key: ValueKey(index),
+                      child: FittedBox(
+                        child: SizedBox.fromSize(
+                          size: size,
+                          child: project.preview(context),
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+              },
+            )
+          : SizedBox(
+              height: ProjectsSection.previewHeight,
+              width: double.infinity,
+              child: ClipRect(
+                child: Entrance(
+                  key: ValueKey(index),
+                  child: SizedBox.expand(child: project.preview(context)),
+                ),
+              ),
+            ),
+    );
+  }
+}
+
+/// The section on a phone: the open project's window on top, the arrows and
+/// a dot per project under it, then the projects as an accordion
+class _CompactProjects extends StatelessWidget {
+  final ProjectState state;
+
+  const _CompactProjects({required this.state});
+
+  @override
+  Widget build(BuildContext context) {
+    final intl = context.intl.projects;
+    final colors = app.colors;
+    final cubit = context.read<ProjectCubit>();
+    final chevron = app.assets.icons.actions.chevron;
+    final iconColor = colors.text.primary;
+    final total = state.projects.length;
+    return PageColumn(
+      padding: const EdgeInsets.fromLTRB(0, 64, 0, 24),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        spacing: 20,
+        children: [
+          SectionHeading(overline: intl.overline, title: intl.title),
+          _ProjectWindow(project: state.current, index: state.active),
+          Row(
+            children: [
+              AppIconButton(
+                tooltip: intl.previous,
+                onPressed: cubit.previous,
+                icon: Transform.rotate(
+                  angle: math.pi,
+                  child: chevron.build(size: 18, color: iconColor),
+                ),
+              ),
+              Expanded(
+                child: ExcludeSemantics(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    spacing: 6,
+                    children: [
+                      for (var i = 0; i < total; i++)
+                        AnimatedContainer(
+                          duration: const Duration(milliseconds: 200),
+                          width: i == state.active ? 22 : 6,
+                          height: 6,
+                          decoration: BoxDecoration(
+                            color: i == state.active
+                                ? colors.brand.signal
+                                : colors.surface.strokeStrong,
+                            borderRadius: BorderRadius.circular(3),
+                          ),
+                        ),
+                    ],
+                  ),
+                ),
+              ),
+              AppIconButton(
+                tooltip: intl.next,
+                onPressed: cubit.next,
+                icon: chevron.build(size: 18, color: iconColor),
+              ),
+            ],
           ),
-        ),
+          Semantics(
+            label: intl.pick,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              spacing: 8,
+              children: [
+                for (var i = 0; i < total; i++)
+                  _ProjectTab(
+                    index: i,
+                    project: state.projects[i],
+                    open: i == state.active,
+                    compact: true,
+                    progress: i == state.active && state.auto
+                        ? cubit.rotateEvery
+                        : null,
+                    onPick: () => cubit.pick(i),
+                  ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// [_Details] on a phone: everything stacked, as tall as it needs
+class _CompactDetails extends StatelessWidget {
+  final ProjectModel project;
+
+  const _CompactDetails({required this.project});
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = app.colors;
+    final hasFooter = project.links.isNotEmpty || project.buttons.isNotEmpty;
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        spacing: 12,
+        children: [
+          Text(
+            project.description.of(context),
+            style: AppText.body.copyWith(color: colors.text.soft),
+          ),
+          Wrap(
+            spacing: 6,
+            runSpacing: 6,
+            children: [
+              for (final tag in project.tags) AppTag(label: tag.of(context)),
+            ],
+          ),
+          if (hasFooter)
+            Container(
+              padding: const EdgeInsets.only(top: 10),
+              decoration: BoxDecoration(
+                border: Border(top: BorderSide(color: colors.surface.stroke)),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                spacing: 8,
+                children: [
+                  for (final button in project.buttons)
+                    AppButton(
+                      label: button.label.of(context),
+                      url: button.url,
+                      icon: button.icon,
+                      expand: true,
+                      height: 48,
+                      fontSize: 15,
+                      padding: const EdgeInsets.fromLTRB(12, 0, 16, 0),
+                      borderRadius: BorderRadius.circular(10),
+                      background: button.primary
+                          ? colors.brand.indigo
+                          : colors.surface.plate,
+                      borderColor: button.primary
+                          ? colors.brand.indigo
+                          : colors.surface.strokeStrong,
+                      foreground: colors.text.primary,
+                    ),
+                  for (final link in project.links)
+                    ConstrainedBox(
+                      constraints: const BoxConstraints(minHeight: 44),
+                      child: AppTextLink(
+                        label: link.label,
+                        url: link.url,
+                        fontSize: 14,
+                      ),
+                    ),
+                ],
+              ),
+            ),
+        ],
       ),
     );
   }

@@ -1,4 +1,5 @@
 import 'package:root101/app_exporter.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// The projects of Root101, by hand. A new project is one more entry here:
 /// the terminal, the marquee, the counter of the hero and the projects section
@@ -22,6 +23,8 @@ abstract class ProjectsCatalog {
       logo: app.assets.projects.winter,
       windowTitle: const LocalizedText.same('winter · lib/main.dart'),
       preview: (_) => const WinterPreview(),
+      // the code at ~10 px on a phone
+      compactPreviewSize: const Size(470, 470),
       links: [
         ProjectLink(
           label: 'pub.dev/packages/winter',
@@ -53,6 +56,7 @@ abstract class ProjectsCatalog {
         es: 'feather io · consola',
       ),
       preview: (_) => const FeatherIoPreview(),
+      compactPreviewSize: const Size(760, 540),
       links: [
         ProjectLink(
           label: 'railway.com/deploy/feather-io',
@@ -84,6 +88,8 @@ abstract class ProjectsCatalog {
         es: 'dump·ling · workspace principal',
       ),
       preview: (_) => const DumplingPreview(),
+      // the whole 1350x900 editor at 60 %
+      compactPreviewSize: const Size(810, 540),
       links: [
         ProjectLink(
           label: 'Root-101/dumpling',
@@ -110,7 +116,8 @@ abstract class ProjectsCatalog {
         en: 'maple · mobile & web',
         es: 'maple · móvil y web',
       ),
-      preview: (_) => const MaplePreview(),
+      preview: (context) => MaplePreview(compact: context.isCompact),
+      compactPreviewSize: const Size(480, 540),
       buttons: [
         // shortcut: no store link yet, the button shows without one; set it when it is published
         ProjectButton(
