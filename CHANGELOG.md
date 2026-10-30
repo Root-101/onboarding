@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.1.1 - 2026-10-30
+
+- nginx serves every file with no-cache (revalidated with its ETag): a reload brings the new deploy, no need to clear the browser cache
+
 ## 2.1.0 - 2026-10-28
 
 Phones and small windows get their own layout, from the design canvas.
